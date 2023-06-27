@@ -77,7 +77,7 @@ Terdapat beberapa tahapan dalam memahami dataset tersebut, yaitu:
     RangeIndex: 100836 entries, 0 to 100835
     Data columns (total 4 columns):
     #   Column     Non-Null Count   Dtype  
-    ---  ------     --------------   -----  
+    --  ------     --------------   -----  
     0   userId     100836 non-null  int64  
     1   movieId    100836 non-null  int64  
     2   rating     100836 non-null  float64
@@ -124,10 +124,60 @@ Terdapat beberapa tahapan dalam memahami dataset tersebut, yaitu:
     | 193609  |  331   |  4.0   | 1537157606      |
 
 
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Melakukan beberapa tahapan yang diperlukan untuk memahami data, contohnya teknik visualisasi data beserta insight atau exploratory data analysis.
 
 ## Data Preparation
+
+Berikut persiapan data yang dilakukan yaitu:
+
+1. Mengatasi missing value
+
+    Data yang digunakan harus diperiksa dahulu, apakah data tersebut terdapat nilai kosong atau tidak. nilai yang kosong dapat menimbulkan bias terhadap hasil pelatihan model *machine learning*. Berikut fungsi yang digunakan untuk mengetahui nilai kosong.
+
+    ```
+    all_movies.isnull().sum()
+    ```
+    
+    maka akan tampil sebagai berikut:
+    
+    ```
+    userId       0
+    movieId      0
+    rating       0
+    timestamp    0
+    title        0
+    genres       0
+    dtype: int64
+    ```
+
+    Dari data diatas bahwa semua fitur tidak memiliki nilai yang kosong.
+
+2. Drop fitur yang tidak digunakan
+
+    Periksa fitur yang tidak terlalu berpengaruh terhadap hasil rating. Dari fitur yang ada, terdapat fitur ``timestamp``. fitur ini tidak digunakan, oleh karena itu fitur ini harus dihilangkan. cara menghilangkannya yaitu dengan fungsi ``drop()`` dengan parameter nama kolom yang ingin dihapus. Berikut kodenya:
+    
+    ```
+    ratings = ratings.drop(columns=['timestamp'])
+    ```
+
+    maka fitur ``timestamp`` akan hilang
+
+    | userId | movieId | rating |
+    |--------|---------|--------|
+    |   1    |    1    |  4.0   |
+    |   1    |    3    |  4.0   |
+    |   1    |    6    |  4.0   |
+    |   1    |   47    |  5.0   |
+    |   1    |   50    |  5.0   |
+    |  ...   |   ...   |  ...   |
+    |  610   | 166534  |  4.0   |
+    |  610   | 168248  |  5.0   |
+    |  610   | 168250  |  5.0   |
+    |  610   | 168252  |  5.0   |
+    |  610   | 170875  |  3.0   |
+
+
+
+
 Pada bagian ini Anda menerapkan dan menyebutkan teknik data preparation yang dilakukan. Teknik yang digunakan pada notebook dan laporan harus berurutan.
 
 **Rubrik/Kriteria Tambahan (Opsional)**: 
