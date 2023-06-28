@@ -153,7 +153,7 @@ Berikut persiapan data yang dilakukan yaitu:
 
 2. Drop fitur yang tidak digunakan
 
-    Periksa fitur yang tidak terlalu berpengaruh terhadap hasil rating. Dari fitur yang ada, terdapat fitur ``timestamp``. fitur ini tidak digunakan, oleh karena itu fitur ini harus dihilangkan. cara menghilangkannya yaitu dengan fungsi ``drop()`` dengan parameter nama kolom yang ingin dihapus. Berikut kodenya:
+    Periksa fitur yang tidak terlalu berpengaruh terhadap hasil rating. Dari fitur yang ada, terdapat fitur ``timestamp``. fitur ini tidak digunakan, oleh karena itu fitur ini harus dihilangkan, jika digunakan maka akan menimbulkan bias pada model. cara menghilangkannya yaitu dengan fungsi ``drop()`` dengan parameter nama kolom yang ingin dihapus. Berikut kodenya:
     
     ```
     ratings = ratings.drop(columns=['timestamp'])
@@ -189,7 +189,7 @@ Berikut persiapan data yang dilakukan yaitu:
     ['Crime', 'Comedy', 'Western', 'Animation', 'Musical', 'Thriller', 'Mystery', 'Romance', 'War', 'Action', 'Fantasy', 'Horror', '(no genres listed)', 'Children', 'Drama', 'IMAX', 'Adventure', 'Sci-Fi', 'Documentary', 'Film-Noir']
     ```
 
-    Dari data diatas, terdapat nama genre `'(no genres listed)'`, maka data ini harus dihilangkan, agar data ini tidak dianggap sebagai nama genre. movie yang tidak memiliki genre dapat mengakibatkan bias pada model..
+    Dari data diatas, terdapat nama genre `'(no genres listed)'`, maka data ini harus dihilangkan, agar data ini tidak dianggap sebagai nama genre. movie yang tidak memiliki genre dapat mengakibatkan bias pada model.
 
     Berikut nama-nama movie yang memiliki data genre `'(no genres listed)'`.
 
@@ -221,13 +221,81 @@ Berikut persiapan data yang dilakukan yaitu:
 
 
 
-Pada bagian ini Anda menerapkan dan menyebutkan teknik data preparation yang dilakukan. Teknik yang digunakan pada notebook dan laporan harus berurutan.
-
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan proses data preparation yang dilakukan
-- Menjelaskan alasan mengapa diperlukan tahapan data preparation tersebut.
-
 ## Modeling
+
+Pada tahap *modeling*, digunakan dua solusi rekomendasi dengan algoritma berbeda yaitu Content Based Filtering dan Collaborative Filtering.
+
+### Content Based Filtering
+
+Content-Based Filtering adalah metode dalam sistem rekomendasi yang menggunakan karakteristik atau konten suatu item untuk merekomendasikan item lain kepada pengguna. Metode ini mengandalkan informasi yang terkandung dalam item-item yang sudah diketahui kesukaan atau preferensi pengguna untuk melakukan rekomendasi. 
+
+Prinsip utama dari Content-Based Filtering adalah mencocokkan preferensi pengguna dengan fitur atau konten dari item-item yang ada. Fitur-fitur ini dapat berupa atribut-atribut seperti judul, genre, aktor, sutradara, atau kata kunci yang terkait dengan item tersebut. Dengan menganalisis kesesuaian fitur-fitur ini, sistem rekomendasi dapat mengidentifikasi item yang paling cocok untuk direkomendasikan kepada pengguna.
+
+Kelebihan Content-Based Filtering:
+1. Personalisasi: Metode ini dapat memberikan rekomendasi yang personal dan sesuai dengan preferensi pengguna. Dengan menganalisis karakteristik item yang disukai oleh pengguna, rekomendasi yang dihasilkan cenderung sesuai dengan preferensi individu.
+2. Tidak membutuhkan data pengguna: CBF tidak memerlukan informasi pengguna selain preferensi awal yang sudah diketahui. Ini berguna jika sistem tidak memiliki akses ke data pengguna yang lengkap atau jika pengguna ingin menjaga privasi mereka.
+3. Kemampuan menghadapi cold-start problem: CBF dapat bekerja dengan baik saat menghadapi cold-start problem, yaitu ketika sistem harus merekomendasikan item kepada pengguna baru atau item baru yang belum banyak diketahui.
+
+Kekurangan Content-Based Filtering:
+1. Keterbatasan variasi: Metode ini cenderung membatasi rekomendasi pada item yang memiliki fitur atau karakteristik serupa dengan item yang sudah disukai oleh pengguna. Ini dapat menyebabkan kurangnya variasi dalam rekomendasi, sehingga pengguna mungkin tidak diperkenalkan dengan item-item baru atau berbeda.
+2. Tidak memperhitungkan preferensi sosial: CBF hanya mempertimbangkan preferensi individu pengguna dan tidak memperhitungkan preferensi sosial atau rekomendasi dari pengguna lain. Hal ini dapat mengabaikan kemungkinan pengaruh sosial dalam preferensi pengguna.
+3. Ketergantungan pada kualitas konten: Efektivitas CBF sangat tergantung pada kualitas dan keakuratan informasi konten yang dianalisis. Jika atribut-atribut yang digunakan tidak cukup representatif atau tidak mencerminkan preferensi pengguna secara akurat, rekomendasi yang dihasilkan mungkin tidak relevan atau tepat.
+
+Pada proyek ini, Content Based Filtering diawali dengan TF-IDF Vectorizer.
+
+1. **TF-IDF Vectorizer**
+
+    TF-IDF Vectorizer adalah algoritma yang mengubah teks menjadi representasi vektor numerik. Ini menggunakan konsep term frequency (frekuensi kata) dan inverse document frequency (kebalikan frekuensi dokumen). Term frequency mengukur seberapa sering kata muncul dalam suatu dokumen, sementara inverse document frequency mengukur pentingnya kata dalam seluruh dokumen. Dengan menggabungkan kedua nilai ini, TF-IDF Vectorizer menghasilkan vektor numerik yang merepresentasikan teks. Ini digunakan dalam berbagai tugas pemrosesan bahasa alami seperti klasifikasi teks dan pengambilan informasi. Dalam proyek ini, algoritma ini digunakan untuk mengambil fitur penting pada fitur ``genres``.
+
+    pertama, inisialisasi dahulu algoritmanya.
+
+    ```py
+    # Inisialisasi TfidfVectorizer
+    tf = TfidfVectorizer(token_pattern=r"(?u)\b\w[\w-]*\w\b")
+    ```
+
+    Dalam proyek ini, TfidfVectorizer diisi dengan parameter ``token_pattern=r"(?u)\b\w[\w-]*\w\b"``. parameter tersebut bertujuan untuk mengambil data penting dengan syarat kata yang berisi *hyphenated word* tidak dipisah. Di fitur genre terdapat genre ``Sci-fi`` dan ``Film-Noir``, maka kata *hyphenated word* tersebut tidak akan dipisah menjadi ``Sci`` dan ``Fi``. Kata-kata tersebut akan dianggap sebagai satu genre yang utuh. Berikut fitur penting yang dihasilkan:
+
+    ```
+    array(['action', 'adventure', 'animation', 'children', 'comedy', 'crime', 'documentary', 'drama', 'fantasy', 'film-noir', 'horror', 'imax', 'musical', 'mystery', 'romance', 'sci-fi', 'thriller', 'war', 'western'], dtype=object)
+    ``` 
+
+    Kemudian melakukan fit lalu transformasikan ke bentuk matrix.
+
+    ```py
+    tfidf_matrix = tf.fit_transform(fix_movies['genres'])
+    ```
+
+    Untuk melihat tf-idf matrix, buatlah *DataFrame* dengan fitur penting yang dihasilkan sebelumnya sebagai kolom dan ``title`` *movie* sebagai baris.
+
+    ```py
+    pd.DataFrame(
+    tfidf_matrix.todense(),
+    columns=tf.get_feature_names_out(),
+    index=fix_movies.title
+    ).sample(10, axis=1).sample(10, axis=0)
+    ```
+
+    | title                                      | thriller | children | musical | animation | fantasy | action   | war     | horror | film-noir | imax     |
+    |--------------------------------------------|----------|----------|---------|-----------|---------|----------|---------|--------|-----------|----------|
+    | Osama (2003)                               | 0.000000 | 0.0      | 0.0     | 0.0       | 0.0     | 0.000000 | 0.00000 | 0.0    | 0.000000  | 0.000000 |
+    | The Darkest Minds (2018)                    | 0.624702 | 0.0      | 0.0     | 0.0       | 0.0     | 0.000000 | 0.00000 | 0.0    | 0.000000  | 0.000000 |
+    | Kiss Me, Guido (1997)                       | 0.000000 | 0.0      | 0.0     | 0.0       | 0.0     | 0.000000 | 0.00000 | 0.0    | 0.000000  | 0.000000 |
+    | Transformers: Dark of the Moon (2011)       | 0.000000 | 0.0      | 0.0     | 0.0       | 0.0     | 0.316238 | 0.50147 | 0.0    | 0.000000  | 0.605623 |
+    | Love (2015)                                | 0.000000 | 0.0      | 0.0     | 0.0       | 0.0     | 0.000000 | 0.00000 | 0.0    | 0.000000  | 0.000000 |
+    | Laura (1944)                               | 0.000000 | 0.0      | 0.0     | 0.0       | 0.0     | 0.000000 | 0.00000 | 0.0    | 0.757191  | 0.000000 |
+    | Sympathy for the Underdog (1971)            | 0.000000 | 0.0      | 0.0     | 0.0       | 0.0     | 0.598095 | 0.00000 | 0.0    | 0.000000  | 0.000000 |
+    | Spellbound (2011)                          | 0.000000 | 0.0      | 0.0     | 0.0       | 0.0     | 0.000000 | 0.00000 | 0.0    | 0.000000  | 0.000000 |
+    | Blue Angel, The (Blaue Engel, Der) (1930)   | 0.000000 | 0.0      | 0.0     | 0.0       | 0.0     | 0.000000 | 0.00000 | 0.0    | 0.000000  | 0.000000 |
+    | Five Deadly Venoms (1978)                   | 0.000000 | 0.0      | 0.0     | 0.0       | 0.0     | 1.000000 | 0.00000 | 0.0    | 0.000000  | 0.000000 |
+
+
+    
+
+
+
+### Collaborative Filtering
+
 Tahapan ini membahas mengenai model sisten rekomendasi yang Anda buat untuk menyelesaikan permasalahan. Sajikan top-N recommendation sebagai output.
 
 **Rubrik/Kriteria Tambahan (Opsional)**: 
