@@ -175,6 +175,49 @@ Berikut persiapan data yang dilakukan yaitu:
     |  610   | 168252  |  5.0   |
     |  610   | 170875  |  3.0   |
 
+3. Pisahkan movie yang tidak ada genre.
+
+    Karena genre digunakan sebagai fitur rekomendasi, hilangkan movie yang tidak memiliki genre. Periksa nama-nama genre yang tersedia.
+
+    ```py
+    genre_list = movies.genres.str.split("|").tolist()
+    genre = list(set(itertools.chain(*genre_list)))
+    genre
+    ```
+
+    ```py
+    ['Crime', 'Comedy', 'Western', 'Animation', 'Musical', 'Thriller', 'Mystery', 'Romance', 'War', 'Action', 'Fantasy', 'Horror', '(no genres listed)', 'Children', 'Drama', 'IMAX', 'Adventure', 'Sci-Fi', 'Documentary', 'Film-Noir']
+    ```
+
+    Dari data diatas, terdapat nama genre `'(no genres listed)'`, maka data ini harus dihilangkan, agar data ini tidak dianggap sebagai nama genre.
+
+    Berikut nama-nama movie yang memiliki data genre `'(no genres listed)'`.
+
+    ```py
+    movies[movies['genres'] == '(no genres listed)']
+    ```
+
+    | movieId | title                        | genres              |
+    |---------|------------------------------|---------------------|
+    | 165489  | Ethel & Ernest (2016)        | (no genres listed)  |
+    | 166024  | Whiplash (2013)              | (no genres listed)  |
+    | 167570  | The OA                       | (no genres listed)  |
+    | 169034  | Lemonade (2016)              | (no genres listed)  |
+    | 171495  | Cosmos                       | (no genres listed)  |
+    | 171631  | Maria Bamford: Old Baby      | (no genres listed)  |
+    | ...     | ...                          | (no genres listed)  |
+
+
+    Lakukan drop baris yang memiliki genres `'(no genres listed)'`.
+
+    ```py
+    fix_movies = movies.drop(movies[movies['genres'] == '(no genres listed)'].index)
+    print("jumlah movie tidak ada genre : ", len(fix_movies[fix_movies['genres'] == '(no genres listed)']))
+    ```
+
+    ```
+    jumlah movie tidak ada genre :  0
+    ```
 
 
 
