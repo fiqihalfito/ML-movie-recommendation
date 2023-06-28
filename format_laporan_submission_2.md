@@ -189,7 +189,7 @@ Berikut persiapan data yang dilakukan yaitu:
     ['Crime', 'Comedy', 'Western', 'Animation', 'Musical', 'Thriller', 'Mystery', 'Romance', 'War', 'Action', 'Fantasy', 'Horror', '(no genres listed)', 'Children', 'Drama', 'IMAX', 'Adventure', 'Sci-Fi', 'Documentary', 'Film-Noir']
     ```
 
-    Dari data diatas, terdapat nama genre `'(no genres listed)'`, maka data ini harus dihilangkan, agar data ini tidak dianggap sebagai nama genre. movie yang tidak memiliki genre dapat mengakibatkan bias pada model.
+    Dari data diatas, terdapat nama genre `'(no genres listed)'`, maka data ini harus dihilangkan, agar data ini tidak dianggap sebagai nama genre. movie yang tidak memiliki genre dapat mengakibatkan bias pada model..
 
     Berikut nama-nama movie yang memiliki data genre `'(no genres listed)'`.
 
