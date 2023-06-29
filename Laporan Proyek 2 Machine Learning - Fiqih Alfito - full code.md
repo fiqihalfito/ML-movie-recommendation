@@ -110,7 +110,12 @@ Terdapat beberapa tahapan dalam memahami dataset tersebut, yaitu:
 
 2. Filter jumlah data
 
-    ``unique()`` digunakan untuk mendapatkan nilai unik dari sekumpulan data. kumpulan data unik ini bisa digunakan untuk mengetahui jumlah data sebenarnya. Berikut info yang dihasilkan.
+    ``unique()`` digunakan untuk mendapatkan nilai unik dari sekumpulan data. kumpulan data unik ini bisa digunakan untuk mengetahui jumlah data sebenarnya.
+
+    ```py
+    print('Banyak movie dalam ratings :', len(ratings.movieId.unique()))
+    print('Banyak user dalam ratings :', len(ratings.userId.unique()))
+    ```
 
     ```
     Banyak movie dalam ratings : 9724
@@ -119,9 +124,11 @@ Terdapat beberapa tahapan dalam memahami dataset tersebut, yaitu:
 
 3. Mengetahui jumlah rating
 
-    Untuk mengetahui jumlah rating dari sebuah film yang telah dinilai dari beberapa *user*. Pandas menyediakan fungsi ``groupby().sum()``. ``groupby()`` diisi dengan parameter fitur yang ingin dikelompokkan. fungsi ``sum()`` akan menjumlahkan fitur-fitur yang berisi angka, termasuk selain fitur `rating`. 
-
-    Dari info diatas, maka tampil tabel berisi *movie* yang telah dikelompokkan beserta jumlah *rating*.
+    Untuk mengetahui jumlah rating dari sebuah film yang telah dinilai dari beberapa *user*. Pandas menyediakan fungsi ``groupby().sum()``. ``groupby()`` diisi dengan parameter fitur yang ingin dikelompokkan. fungsi ``sum()`` akan menjumlahkan fitur-fitur yang berisi angka, termasuk selain fitur `rating`. berikut tampilan kodenya:
+    ```
+    all_movies.groupby('movieId').sum()
+    ``` 
+    maka tampil tabel berisi *movie* yang telah dikelompokkan beserta jumlah *rating*.
 
     Tabel 1. total rating setiap movie.
 
@@ -198,6 +205,12 @@ Berikut persiapan data yang dilakukan yaitu:
     Karena genre digunakan sebagai fitur rekomendasi, hilangkan movie yang tidak memiliki genre. Periksa nama-nama genre yang tersedia.
 
     ```py
+    genre_list = movies.genres.str.split("|").tolist()
+    genre = list(set(itertools.chain(*genre_list)))
+    genre
+    ```
+
+    ```py
     ['Crime', 'Comedy', 'Western', 'Animation', 'Musical', 'Thriller', 'Mystery', 'Romance', 'War', 'Action', 'Fantasy', 'Horror', '(no genres listed)', 'Children', 'Drama', 'IMAX', 'Adventure', 'Sci-Fi', 'Documentary', 'Film-Noir']
     ```
 
@@ -223,6 +236,11 @@ Berikut persiapan data yang dilakukan yaitu:
 
 
     Lakukan drop baris yang memiliki genres `'(no genres listed)'`.
+
+    ```py
+    fix_movies = movies.drop(movies[movies['genres'] == '(no genres listed)'].index)
+    print("jumlah movie tidak ada genre : ", len(fix_movies[fix_movies['genres'] == '(no genres listed)']))
+    ```
 
     ```
     jumlah movie tidak ada genre :  0
