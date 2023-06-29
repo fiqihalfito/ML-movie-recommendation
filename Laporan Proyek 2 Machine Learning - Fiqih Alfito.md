@@ -14,7 +14,7 @@ Berdasarkan kondisi yang telah diuraikan sebelumnya, penulis akan mengembangkan 
 
 Menjelaskan pernyataan masalah:
 - Berdasarkan data mengenai *user*, bagaimana membuat sistem rekomendasi yang dipersonalisasi dengan teknik content-based filtering?
-- Dengan data rating yang Anda miliki, bagaimana sistem dapat merekomendasikan movie lain yang mungkin disukai dan belum pernah dikunjungi oleh *user*? 
+- Dengan data rating yang dimiliki, bagaimana sistem dapat merekomendasikan movie lain yang mungkin disukai dan belum pernah dikunjungi oleh *user*? 
 
 ### Goals
 
@@ -22,7 +22,6 @@ Menjelaskan tujuan proyek yang menjawab pernyataan masalah:
 - Menghasilkan sejumlah rekomendasi restoran yang dipersonalisasi untuk pengguna dengan teknik content-based filtering.
 - Menghasilkan sejumlah rekomendasi movie yang sesuai dengan preferensi pengguna dan belum pernah ditonton sebelumnya dengan teknik collaborative filtering.
 
-Semua poin di atas harus diuraikan dengan jelas. Anda bebas menuliskan berapa pernyataan masalah dan juga goals yang diinginkan.
 
 
 ### Solution statements
@@ -76,36 +75,7 @@ Terdapat beberapa tahapan dalam memahami dataset tersebut, yaitu:
 
 1. Periksa jumlah data dan type data
 
-    Terdapat fungsi dari pandas yaitu ``df.info()``. digunakan untuk melihat informasi dari sebuah *dataframe* Pandas seperti jumlah data dan type data dari setiap fitur. Berikut adalah info yang dihasilkan dari setiap *dataframe*.
-
-    - Data movie
-
-    ```
-    RangeIndex: 9742 entries, 0 to 9741
-    Data columns (total 3 columns):
-    #   Column   Non-Null Count  Dtype 
-    --  ------   --------------  ----- 
-    0   movieId  9742 non-null   int64 
-    1   title    9742 non-null   object
-    2   genres   9742 non-null   object
-    dtypes: int64(1), object(2)
-    memory usage: 228.5+ KB
-    ```
-
-    - Data rating
-
-    ```
-    RangeIndex: 100836 entries, 0 to 100835
-    Data columns (total 4 columns):
-    #   Column     Non-Null Count   Dtype  
-    --  ------     --------------   -----  
-    0   userId     100836 non-null  int64  
-    1   movieId    100836 non-null  int64  
-    2   rating     100836 non-null  float64
-    3   timestamp  100836 non-null  int64  
-    dtypes: float64(1), int64(3)
-    memory usage: 3.1 MB
-    ```
+    Terdapat fungsi dari pandas yaitu ``df.info()``. digunakan untuk melihat informasi dari sebuah *dataframe* Pandas seperti jumlah data dan type data dari setiap fitur.
 
 
 2. Filter jumlah data
@@ -148,12 +118,8 @@ Berikut persiapan data yang dilakukan yaitu:
 1. Mengatasi missing value
 
     Data yang digunakan harus diperiksa dahulu, apakah data tersebut terdapat nilai kosong atau tidak. nilai yang kosong dapat menimbulkan bias terhadap hasil pelatihan model *machine learning*. Berikut fungsi yang digunakan untuk mengetahui nilai kosong.
-
-    ```
-    all_movies.isnull().sum()
-    ```
     
-    maka akan tampil sebagai berikut:
+    maka akan tampil jumlah nilai kosong pada setiap fitur sebagai berikut:
     
     ```
     userId       0
@@ -169,13 +135,7 @@ Berikut persiapan data yang dilakukan yaitu:
 
 2. Drop fitur yang tidak digunakan
 
-    Periksa fitur yang tidak terlalu berpengaruh terhadap hasil rating. Dari fitur yang ada, terdapat fitur ``timestamp``. fitur ini tidak digunakan, oleh karena itu fitur ini harus dihilangkan, jika digunakan maka akan menimbulkan bias pada model. cara menghilangkannya yaitu dengan fungsi ``drop()`` dengan parameter nama kolom yang ingin dihapus. Berikut kodenya:
-    
-    ```
-    ratings = ratings.drop(columns=['timestamp'])
-    ```
-
-    maka fitur ``timestamp`` akan hilang.
+    Periksa fitur yang tidak terlalu berpengaruh terhadap hasil rating. Dari fitur yang ada, terdapat fitur ``timestamp``. fitur ini tidak digunakan, oleh karena itu fitur ini harus dihilangkan, jika digunakan maka akan menimbulkan bias pada model. cara menghilangkannya yaitu dengan fungsi ``drop()`` dengan parameter nama kolom yang ingin dihapus. 
 
     Tabel 2. tabel rating setelah fitur `timestamp` dihapus.
 
@@ -193,7 +153,36 @@ Berikut persiapan data yang dilakukan yaitu:
     |  610   | 168252  |  5.0   |
     |  610   | 170875  |  3.0   |
 
-3. Pisahkan movie yang tidak ada genre.
+3. Encode fitur pada rating
+
+    Pada tahap ini, kita perlu melakukan persiapan data untuk menyandikan (encode) fitur `userId` dan `movieId` ke dalam indeks integer.
+
+    Kemudian petakan `userId` dan `movieId` ke dataframe `ratings`.
+
+    Tabel 8. pemetaan *encode* *user* dan *movie* ke *dataframe* `ratings`
+
+    | userId | movieId | rating | user | movie |
+    |--------|---------|--------|------|-------|
+    |   1    |    1    |  4.0   |   0  |   0   |
+    |   1    |    3    |  4.0   |   0  |   1   |
+    |   1    |    6    |  4.0   |   0  |   2   |
+    |   1    |   47    |  5.0   |   0  |   3   |
+    |   1    |   50    |  5.0   |   0  |   4   |
+    |   ...  | 
+
+    Terakhir, cek beberapa hal dalam data seperti jumlah user dan jumlah movie.
+
+    ```
+    610
+    9724
+    Number of User: 610,
+    Number of Movie: 9724,
+    Min Rating: 0.5,
+    Max Rating: 5.0
+    ```
+
+
+4. Pisahkan movie yang tidak ada genre.
 
     Karena genre digunakan sebagai fitur rekomendasi, hilangkan movie yang tidak memiliki genre. Periksa nama-nama genre yang tersedia.
 
@@ -204,10 +193,6 @@ Berikut persiapan data yang dilakukan yaitu:
     Dari data diatas, terdapat nama genre `'(no genres listed)'`, maka data ini harus dihilangkan, agar data ini tidak dianggap sebagai nama genre. movie yang tidak memiliki genre dapat mengakibatkan bias pada model.
 
     Berikut nama-nama movie yang memiliki data genre `'(no genres listed)'`.
-
-    ```py
-    movies[movies['genres'] == '(no genres listed)']
-    ```
 
     Tabel 3. tabel movie yang berisi tidak ada genre.
     
@@ -400,52 +385,15 @@ Kekurangan Collaborative Filtering:
 
 Berikut adalah tahapan dari Collaborative Filtering:
 
-1. Data Understanding
+1. Membagi Data untuk Training dan Validasi
 
-    Mengambil data `ratings` sebagai data untuk dijadikan rekomendasi.
-
-    ```py
-    df = ratings.copy()
-    ```
-
-2. Data Preparation
-
-    Pada tahap ini, kita perlu melakukan persiapan data untuk menyandikan (encode) fitur `userId` dan `movieId` ke dalam indeks integer.
-
-    Kemudian petakan `userId` dan `movieId` ke dataframe `ratings`.
-
-    Tabel 8. pemetaan *encode* *user* dan *movie* ke *dataframe* `ratings`
-
-    | userId | movieId | rating | user | movie |
-    |--------|---------|--------|------|-------|
-    |   1    |    1    |  4.0   |   0  |   0   |
-    |   1    |    3    |  4.0   |   0  |   1   |
-    |   1    |    6    |  4.0   |   0  |   2   |
-    |   1    |   47    |  5.0   |   0  |   3   |
-    |   1    |   50    |  5.0   |   0  |   4   |
-    |   ...  | 
-
-    Terakhir, cek beberapa hal dalam data seperti jumlah user dan jumlah movie.
-
-    ```
-    610
-    9724
-    Number of User: 610,
-    Number of Movie: 9724,
-    Min Rating: 0.5,
-    Max Rating: 5.0
-    ```
-
-3. Membagi Data untuk Training dan Validasi
-
-    Sebelum membagi data training dan validasi, acak datanya terlebih dahulu agar distribusinya random.
-
+    Data yang akan dibagi merupakan data yang sudah diproses di tahap Data Preperation. Sebelum membagi data training dan validasi, acak datanya terlebih dahulu agar distribusinya random.
 
     Karena data berjumlah banyak, maka kita bagi data dengan rasio 90:10. Namun sebelumnya, kita perlu memetakan data `user` dan `movie` menjadi satu value terlebih dahulu. Lalu, buatlah rating dalam skala 0 sampai 1 agar mudah dalam melakukan proses training.
 
     Selanjutnya data telah siap untuk dimasukkan ke model.
 
-4. Proses Training
+2. Proses Training
 
     Pada tahap ini, model menghitung skor kecocokan antara pengguna dan movie dengan teknik embedding. Pertama, kita melakukan proses embedding terhadap data user dan movie. Selanjutnya, lakukan operasi perkalian dot product antara embedding user dan movie. Selain itu, kita juga dapat menambahkan bias untuk setiap user dan movie. Skor kecocokan ditetapkan dalam skala [0,1] dengan fungsi aktivasi sigmoid.
 
@@ -460,7 +408,7 @@ Berikut adalah tahapan dari Collaborative Filtering:
 
     Setelah melakukan fit model, maka model siap digunakan untuk menghasilkan rekomendasi.
 
-5. Mendapatkan Rekomendasi Movie
+3. Mendapatkan Rekomendasi Movie
 
     Untuk mendapatkan rekomendasi movie, pertama kita ambil sampel user secara acak dan definisikan variabel movie_not_watched yang merupakan daftar movie yang belum pernah dikunjungi oleh pengguna. Anda mungkin bertanya-tanya, mengapa kita perlu menentukan daftar movie_not_watched? Hal ini karena daftar movie_not_watched inilah yang akan menjadi movie yang kita rekomendasikan. 
 
@@ -528,9 +476,9 @@ Berikut adalah tahapan dari Collaborative Filtering:
     Genres: Drama
    ```
 
-    Hasil di atas adalah rekomendasi untuk user dengan id 425. Dari output tersebut, kita dapat membandingkan antara Movie with high ratings from user dan Top 10 movie recommendation untuk user. 
+    Hasil di atas adalah rekomendasi untuk user dengan id 425. Dari output tersebut, dapat dibandingkan antara Movie with high ratings from user dan Top 10 movie recommendation untuk user. 
 
-    Perhatikanlah, beberapa movie rekomendasi menyediakan genre yang sesuai dengan rating user. Kita memperoleh movie dengan genre dominan Drama, sesuai dengan rating user yang lebih dominan movie bergenre Drama. Begitu pula dengan genre lainnya. Prediksi yang cukup sesuai.
+    Beberapa movie rekomendasi menyediakan genre yang sesuai dengan rating user. Sistem merekomendasikan movie dengan genre dominan Drama, sesuai dengan rating user yang lebih dominan movie bergenre Drama. Begitu pula dengan genre lainnya. Prediksi yang cukup sesuai.
 
 ## Evaluation
 
