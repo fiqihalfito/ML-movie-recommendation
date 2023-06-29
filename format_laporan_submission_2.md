@@ -13,24 +13,45 @@ Sistem rekomendasi film menjadi penting dalam konteks industri hiburan dan digit
 Berdasarkan kondisi yang telah diuraikan sebelumnya, penulis akan mengembangkan sebuah sistem prediksi diabetes untuk menjawab permasalahan berikut.
 
 Menjelaskan pernyataan masalah:
-- Pernyataan Masalah 1
-- Pernyataan Masalah 2
-- Pernyataan Masalah n
+- Berdasarkan data mengenai *user*, bagaimana membuat sistem rekomendasi yang dipersonalisasi dengan teknik content-based filtering?
+- Dengan data rating yang Anda miliki, bagaimana sistem dapat merekomendasikan movie lain yang mungkin disukai dan belum pernah dikunjungi oleh *user*? 
 
 ### Goals
 
 Menjelaskan tujuan proyek yang menjawab pernyataan masalah:
-- Jawaban pernyataan masalah 1
-- Jawaban pernyataan masalah 2
-- Jawaban pernyataan masalah n
+- Menghasilkan sejumlah rekomendasi restoran yang dipersonalisasi untuk pengguna dengan teknik content-based filtering.
+- Menghasilkan sejumlah rekomendasi movie yang sesuai dengan preferensi pengguna dan belum pernah ditonton sebelumnya dengan teknik collaborative filtering.
 
 Semua poin di atas harus diuraikan dengan jelas. Anda bebas menuliskan berapa pernyataan masalah dan juga goals yang diinginkan.
 
-**Rubrik/Kriteria Tambahan (Opsional)**:
-- Menambahkan bagian “Solution Approach” yang menguraikan cara untuk meraih goals. Bagian ini dibuat dengan ketentuan sebagai berikut: 
 
-    ### Solution statements
-    - Mengajukan 2 atau lebih solution approach (algoritma atau pendekatan sistem rekomendasi).
+### Solution statements
+
+Untuk mencapai goals yang diinginkan, kita akan membuat sistem rekomendasi dengan alur sebagai berikut.
+
+1. Data Understanding
+
+    Data Understanding adalah tahap awal proyek untuk memahami data yang dimiliki. Dalam kasus ini, penulis memiliki 2 file terpisah, ratings.csv dan movies.csv.
+
+2. Univariate Exploratory Data Analysis
+
+    Pada tahap ini, penulis melakukan analisis dan eksplorasi setiap variabel pada data. setiap fitur akan dianalisis apakah fitur tersebut akan berpengaruh atau tidak pada model.
+
+3. Data Preprocessing
+
+    Ini merupakan tahap persiapan data sebelum data digunakan untuk proses selanjutnya. Pada tahap ini, penulis akan melakukan penggabungan beberapa file sehingga menjadi satu kesatuan file yang utuh dan siap digunakan dalam tahap pemodelan.
+
+4. Data Preparation
+
+    Pada tahap ini, penulis mempersiapkan data dan melakukan beberapa teknik seperti mengatasi missing value, drop fitur yang tidak digunakan, dan hapus movie yang tidak memiliki genre. Selanjutnya data telah siap untuk digunakan dalam pengembangan model. 
+
+5. Model Development dengan Content Based Filtering
+
+    Pada tahap inilah penulis mengembangkan sistem rekomendasi dengan teknik content based filtering. Teknik content based filtering akan merekomendasikan movie yang mirip dengan movie yang dinilai/rating *user* di masa lalu. Pada tahap ini, Penulis akan menemukan representasi fitur penting dari setiap genre movie dengan tfidf vectorizer dan menghitung tingkat kesamaan dengan cosine similarity. Setelah itu, penulis akan membuat sejumlah rekomendasi movie untuk user berdasarkan kesamaan yang telah dihitung sebelumnya.
+
+6. Model Development dengan Collaborative Filtering
+
+    Pada tahap ini, sistem merekomendasikan sejumlah movie berdasarkan rating yang telah diberikan sebelumnya. Dari data rating *user*, penulis akan mengidentifikasi movie-movie yang mirip dan belum pernah ditonton oleh *user* untuk direkomendasikan.
 
 ## Data Understanding
 
@@ -776,19 +797,6 @@ Dari hasil RMSE tersebut, dapat dilihat bahwa baik pada data pelatihan maupun da
 Selain itu, RMSE pada data validasi juga memberikan gambaran tentang performa model pada data yang tidak digunakan dalam proses pelatihan. Jika RMSE pada data validasi tetap rendah dan mendekati RMSE pada data pelatihan, maka model memiliki kemampuan umum dalam memprediksi rating tanpa overfitting pada data pelatihan.
 
 
-
-
-
-
-
-
-Pada bagian ini Anda perlu menyebutkan metrik evaluasi yang digunakan. Kemudian, jelaskan hasil proyek berdasarkan metrik evaluasi tersebut.
-
-Ingatlah, metrik evaluasi yang digunakan harus sesuai dengan konteks data, problem statement, dan solusi yang diinginkan.
-
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan formula metrik dan bagaimana metrik tersebut bekerja.
-
 ## Conclusion
 
 Pada solusi Content Based Filtering, solusi ini menghasilkan rekomendasi yang sangat sesuai dengan sampel movie yang diberikan berdasarkan fitur genre movie.
@@ -811,9 +819,3 @@ Saran untuk kedepannya, dataset movie bisa ditambahkan fitur-fitur lainnya agar 
 
 ## References
 [1]   Halim, A., Gohzali, H., Panjaitan, D. M., & Maulana, I. (2017). Sistem Rekomendasi Film menggunakan Bisecting K-Means dan Collaborative Filtering. [Available](https://citisee.amikompurwokerto.ac.id/assets/proceedings/2017/TI08.pdf)
-
-**---Ini adalah bagian akhir laporan---**
-
-_Catatan:_
-- _Anda dapat menambahkan gambar, kode, atau tabel ke dalam laporan jika diperlukan. Temukan caranya pada contoh dokumen markdown di situs editor [Dillinger](https://dillinger.io/), [Github Guides: Mastering markdown](https://guides.github.com/features/mastering-markdown/), atau sumber lain di internet. Semangat!_
-- Jika terdapat penjelasan yang harus menyertakan code snippet, tuliskan dengan sewajarnya. Tidak perlu menuliskan keseluruhan kode project, cukup bagian yang ingin dijelaskan saja.
