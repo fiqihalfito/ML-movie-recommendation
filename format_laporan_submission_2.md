@@ -130,6 +130,8 @@ Terdapat beberapa tahapan dalam memahami dataset tersebut, yaitu:
     ``` 
     maka tampil tabel berisi *movie* yang telah dikelompokkan beserta jumlah *rating*.
 
+    Tabel 1. total rating setiap movie.
+
     | movieId | userId | rating |    timestamp    |
     |---------|--------|--------|-----------------|
     |    1    | 65904  | 843.0  | 242914455479    |
@@ -180,7 +182,9 @@ Berikut persiapan data yang dilakukan yaitu:
     ratings = ratings.drop(columns=['timestamp'])
     ```
 
-    maka fitur ``timestamp`` akan hilang
+    maka fitur ``timestamp`` akan hilang.
+
+    Tabel 2. tabel rating setelah fitur `timestamp` dihapus.
 
     | userId | movieId | rating |
     |--------|---------|--------|
@@ -218,6 +222,8 @@ Berikut persiapan data yang dilakukan yaitu:
     movies[movies['genres'] == '(no genres listed)']
     ```
 
+    Tabel 3. tabel movie yang berisi tidak ada genre.
+    
     | movieId | title                        | genres              |
     |---------|------------------------------|---------------------|
     | 165489  | Ethel & Ernest (2016)        | (no genres listed)  |
@@ -297,6 +303,8 @@ Pada proyek ini, Content Based Filtering diawali dengan TF-IDF Vectorizer.
     ).sample(10, axis=1).sample(10, axis=0)
     ```
 
+    Tabel 4. Tabel matrix tf-idf untuk beberapa movie dan genre
+
     | title                                      | thriller | children | musical | animation | fantasy | action   | war     | horror | film-noir | imax     |
     |--------------------------------------------|----------|----------|---------|-----------|---------|----------|---------|--------|-----------|----------|
     | Osama (2003)                               | 0.000000 | 0.0      | 0.0     | 0.0       | 0.0     | 0.000000 | 0.00000 | 0.0    | 0.000000  | 0.000000 |
@@ -332,6 +340,8 @@ Pada proyek ini, Content Based Filtering diawali dengan TF-IDF Vectorizer.
     ```
 
     Untuk melihat hasil perhitungan *cosine similarity*, buat DataFrame dengan variabel `cosine_sim` sebagai data, `title` sebagai kolom dan baris. Maka akan terlihat derajat kesamaan antar *movie*.
+
+    Tabel 5. Perhitungan *cosine similarity* antar *title movie.*
 
     | title                                              | Japanese Story (2003) | I Am Trying to Break Your Heart (2002) | Mouchette (1967) | Deceiver (1997) | Little Princess, A (1995) | Picture of Dorian Gray, The (1945) | Failure to Launch (2006) | 4 Little Girls (1997) | Stand and Deliver (1988) | Lonely Are the Brave (1962) |
     |----------------------------------------------------|-----------------------|----------------------------------------|------------------|-----------------|---------------------------|-----------------------------------|--------------------------|-----------------------|---------------------------|-----------------------------|
@@ -382,6 +392,8 @@ Pada proyek ini, Content Based Filtering diawali dengan TF-IDF Vectorizer.
     data[data.title.eq('Unleashed (Danny the Dog) (2005)')]
     ```
 
+    Tabel 6. sampel movie sebagai rujukan untuk rekomendasi.
+
     | movieId | title                             | genres                      |
     |---------|-----------------------------------|-----------------------------|
     | 33437   | Unleashed (Danny the Dog) (2005)  | Action/Crime/Drama/Thriller |
@@ -393,6 +405,8 @@ Pada proyek ini, Content Based Filtering diawali dengan TF-IDF Vectorizer.
     ```
     
     maka akan tampil tabel berisi 5 rekomendasi teratas dari judul movie yang kita berikan. 5 rekomendasi judul movie adalah nilai *default* parameter `k`, nilai `k` dapat diubah.
+
+    Tabel 7. Hasil rekomendasi Content-Based Filtering.
     
     | title                              | movieId | genres                            |
     |------------------------------------|---------|-----------------------------------|
@@ -458,6 +472,8 @@ Berikut adalah tahapan dari Collaborative Filtering:
     ```
 
     Kemudian petakan `userId` dan `movieId` ke dataframe `ratings`.
+
+    Tabel 8. pemetaan *encode* *user* dan *movie* ke *dataframe* `ratings`
 
     | userId | movieId | rating | user | movie |
     |--------|---------|--------|------|-------|
@@ -782,6 +798,7 @@ plt.show()
 maka akan tampil gambar berikut:
 
 
+Gambar 1. Visualisasi Metrik Collaborative Filtering
 
 
 Pada hasil fit model yang Anda berikan, RMSE dihitung untuk data pelatihan (train) dan data validasi (validation) setiap epoch. Berikut adalah ringkasan hasil RMSE pada setiap epoch:
