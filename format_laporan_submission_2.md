@@ -225,7 +225,7 @@ Berikut persiapan data yang dilakukan yaitu:
 
 Pada tahap *modeling*, digunakan dua solusi rekomendasi dengan algoritma berbeda yaitu Content Based Filtering dan Collaborative Filtering.
 
-### Content Based Filtering
+### **Content Based Filtering**
 
 Content-Based Filtering adalah metode dalam sistem rekomendasi yang menggunakan karakteristik atau konten suatu item untuk merekomendasikan item lain kepada pengguna. Metode ini mengandalkan informasi yang terkandung dalam item-item yang sudah diketahui kesukaan atau preferensi pengguna untuk melakukan rekomendasi. 
 
@@ -290,17 +290,429 @@ Pada proyek ini, Content Based Filtering diawali dengan TF-IDF Vectorizer.
     | Five Deadly Venoms (1978)                   | 0.000000 | 0.0      | 0.0     | 0.0       | 0.0     | 1.000000 | 0.00000 | 0.0    | 0.000000  | 0.000000 |
 
 
+2. **Cosine Similarity**
+
+    Cosine similarity adalah metode yang umum digunakan dalam sistem rekomendasi untuk mengukur tingkat kesamaan antara dua vektor. Ini membantu dalam menentukan sejauh mana dua item atau entitas serupa atau memiliki preferensi yang serupa.
+
+    Dalam konteks sistem rekomendasi, item atau entitas yang akan direkomendasikan sering kali diwakili sebagai vektor dalam ruang fitur. Setiap dimensi dalam vektor ini mewakili atribut atau fitur yang relevan untuk item tersebut. Misalnya, dalam sistem rekomendasi film, setiap film dapat direpresentasikan sebagai vektor dengan dimensi yang mewakili atribut-atribut seperti genre, aktor, sutradara, dll.
+
+    Cosine similarity menggunakan konsep dari ruang vektor untuk mengukur sudut antara dua vektor. Semakin dekat sudut antara dua vektor dengan 0 derajat (kemungkinan terbesar), semakin mirip atau serupa vektor-vektor tersebut. Metode ini mengabaikan magnitudo vektor dan hanya memperhatikan arahnya.
+
+    Dalam sistem rekomendasi, cosine similarity dapat digunakan untuk menghitung kesamaan antara dua item atau entitas berdasarkan atribut-atribut yang relevan. Dengan menghitung cosine similarity antara vektor representasi item yang ada dalam dataset dengan vektor representasi item yang sedang direkomendasikan, kita dapat mengidentifikasi item yang paling mirip atau serupa dengan item yang sedang dicari. Item dengan nilai cosine similarity yang lebih tinggi kemungkinan besar akan menjadi rekomendasi yang lebih relevan bagi pengguna.
+
+    Hasil dari cosine similarity akan berada dalam rentang -1 hingga 1. Nilai 1 menunjukkan kesamaan sempurna antara dua vektor, sedangkan nilai -1 menunjukkan perbedaan sempurna. Nilai 0 menunjukkan bahwa dua vektor saling tegak lurus atau tidak ada kesamaan sama sekali.
+
+    Dalam proyek ini, masukkan *td-idf matrix* yang didapat pada tahap TF-IDF Vectorizer sebelumnya sebagai parameter dari fungsi ``cosine_similarity()``.
+
+    ```py
+    # Menghitung cosine similarity pada matrix tf-idf
+    cosine_sim = cosine_similarity(tfidf_matrix)
+    cosine_sim
+    ```
+
+    Untuk melihat hasil perhitungan *cosine similarity*, buat DataFrame dengan variabel `cosine_sim` sebagai data, `title` sebagai kolom dan baris. Maka akan terlihat derajat kesamaan antar *movie*.
+
+    | title                                              | Japanese Story (2003) | I Am Trying to Break Your Heart (2002) | Mouchette (1967) | Deceiver (1997) | Little Princess, A (1995) | Picture of Dorian Gray, The (1945) | Failure to Launch (2006) | 4 Little Girls (1997) | Stand and Deliver (1988) | Lonely Are the Brave (1962) |
+    |----------------------------------------------------|-----------------------|----------------------------------------|------------------|-----------------|---------------------------|-----------------------------------|--------------------------|-----------------------|---------------------------|-----------------------------|
+    | The House (2017)                                   | 0.0                   | 0.0                                    | 0.0              | 0.0             | 0.0                       | 0.0                               | 0.570705                 | 0.0                   | 0.734682                  | 0.0                         |
+    | RocknRolla (2008)                                  | 0.0                   | 0.0                                    | 0.0              | 0.52661         | 0.0                       | 0.0                               | 0.0                      | 0.0                   | 0.0                       | 0.0                         |
+    | City of Women, The (Città delle donne, La) (1980)  | 0.678412              | 0.0                                    | 0.678412         | 0.274935        | 0.298034                  | 0.237259                          | 0.419287                 | 0.0                   | 1.0                       | 0.227514                    |
+    | John Mulaney: New In Town (2012)                   | 0.0                   | 0.0                                    | 0.0              | 0.0             | 0.0                       | 0.0                               | 0.570705                 | 0.0                   | 0.734682                  | 0.0                         |
+    | Time of the Gypsies (Dom za vesanje) (1989)        | 0.334307              | 0.0                                    | 0.334307         | 0.534875        | 0.146865                  | 0.564351                          | 0.206615                 | 0.0                   | 0.492778                  | 0.112114                    |
+    | Marvel One-Shot: Agent Carter (2013)               | 0.0                   | 0.0                                    | 0.0              | 0.0             | 0.0                       | 0.382864                          | 0.0                      | 0.0                   | 0.0                       | 0.0                         |
+    | Open Season (2006)                                 | 0.0                   | 0.0                                    | 0.0              | 0.0             | 0.404338                  | 0.0                               | 0.136037                 | 0.0                   | 0.175124                  | 0.0                         |
+    | 12 Chairs (1976)                                   | 0.0                   | 0.0                                    | 0.0              | 0.0             | 0.0                       | 0.0                               | 0.308159                 | 0.0                   | 0.3967                    | 0.0                         |
+    | Rebound (2005)                                     | 0.0                   | 0.0                                    | 0.0              | 0.0             | 0.0                       | 0.0                               | 0.570705                 | 0.0                   | 0.734682                  | 0.0                         |
+    | Married to the Mob (1988)                          | 0.0                   | 0.0                                    | 0.0              | 0.0             | 0.0                       | 0.0                               | 0.570705                 | 0.0                   | 0.734682                  | 0.0                         |
+
+
+3. **Mendapatkan Rekomendasi**
+
+    Untuk buat rekomendasi, buatlah fungsi untuk memberikan rekomendasi dengan parameter sebagai berikut:
+
+    - title : judul movie (index kemiripan dataframe)
+    - similarity_data : DataFrame mengenai similarity yang telah kita definisikan sebelumnya.
+    - items : data movie yang akan digunakan untuk mendefinisikan kemiripan.
+    - k : banyak rekomendasi yang ingin diberikan.
+
+    sebelum mulai menulis kodenya, ingatlah kembali definisi sistem rekomendasi yang menyatakan bahwa keluaran sistem ini adalah berupa top-N recommendation. Oleh karena itu, kita akan memberikan sejumlah rekomendasi movie pada pengguna yang diatur dalam parameter k.
+
+    ```py
+    def movie_recommendations(title, similarity_data=cosine_sim_df, items=data, k=5):
     
+    # Mengambil data dengan menggunakan argpartition untuk melakukan partisi secara tidak langsung sepanjang sumbu yang diberikan
+    # Dataframe diubah menjadi numpy
+    # Range(start, stop, step)
+    index = similarity_data.loc[:,title].to_numpy().argpartition(
+        range(-1, -k, -1))
+
+    # Mengambil data dengan similarity terbesar dari index yang ada
+    closest = similarity_data.columns[index[-1:-(k+2):-1]]
+
+    # Drop title agar nama title yang dicari tidak muncul dalam daftar rekomendasi
+    closest = closest.drop(title, errors='ignore')
+
+    return pd.DataFrame(closest).merge(items).head(k)
+    ```
+
+    Kemudian ambil satu sampel movie untuk diberikan rekomendasi pada movie tersebut.
+
+    ```py
+    data[data.title.eq('Unleashed (Danny the Dog) (2005)')]
+    ```
+
+    | movieId | title                             | genres                      |
+    |---------|-----------------------------------|-----------------------------|
+    | 33437   | Unleashed (Danny the Dog) (2005)  | Action/Crime/Drama/Thriller |
+
+    Selanjutnya jalankan fungsi `movie_recommendation()` dengan parameter judul movie seperti sampel sebelumnya.
+
+    ```py
+    movie_recommendations('Unleashed (Danny the Dog) (2005)')
+    ```
+    
+    maka akan tampil tabel berisi 5 rekomendasi teratas dari judul movie yang kita berikan. 5 rekomendasi judul movie adalah nilai *default* parameter `k`, nilai `k` dapat diubah.
+    
+    | title                              | movieId | genres                            |
+    |------------------------------------|---------|-----------------------------------|
+    | Collateral (2004)                  | 8798    | Action/Crime/Drama/Thriller       |
+    | To Live and Die in L.A. (1985)     | 7040    | Action/Crime/Drama/Thriller       |
+    | The Fate of the Furious (2017)     | 170875  | Action/Crime/Drama/Thriller       |
+    | Pusher II: With Blood on My Hands (2004) | 34811   | Action/Crime/Drama/Thriller       |
+    | Bullitt (1968)                     | 7076    | Action/Crime/Drama/Thriller       |
+  
+    Dari tabel di atas bahwa movie "Unleashed (Danny the Dog) (2005)" dengan kategori Action|Crime|Drama|Thriller menghasilkan rekomendasi movie dengan kategori yang sama.
 
 
+### **Collaborative Filtering**
 
-### Collaborative Filtering
+Collaborative Filtering (CF) adalah salah satu metode yang digunakan dalam sistem rekomendasi untuk memberikan rekomendasi kepada pengguna berdasarkan preferensi atau perilaku pengguna lainnya. Pendekatan ini didasarkan pada asumsi bahwa pengguna yang memiliki preferensi yang sama di masa lalu cenderung memiliki preferensi yang sama di masa depan.
 
-Tahapan ini membahas mengenai model sisten rekomendasi yang Anda buat untuk menyelesaikan permasalahan. Sajikan top-N recommendation sebagai output.
+Ada dua jenis utama dari Collaborative Filtering:
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menyajikan dua solusi rekomendasi dengan algoritma yang berbeda.
-- Menjelaskan kelebihan dan kekurangan dari solusi/pendekatan yang dipilih.
+- **Collaborative Filtering berdasarkan Item (Item-Based Collaborative Filtering)**: Metode ini menganalisis hubungan antara item yang berbeda dalam sistem rekomendasi. Jika dua item sering kali diberikan peringkat yang sama oleh pengguna, maka item tersebut dianggap memiliki hubungan dan dianggap saling terkait. Ketika seorang pengguna memberikan peringkat pada satu item, sistem rekomendasi dapat merekomendasikan item lain yang memiliki hubungan yang kuat dengan item yang diberi peringkat tersebut.
+
+- **Collaborative Filtering berdasarkan Pengguna (User-Based Collaborative Filtering)**: Metode ini menganalisis kesamaan preferensi antara pengguna. Jika dua pengguna sering memiliki preferensi yang serupa dalam memberikan peringkat pada item, maka sistem rekomendasi dapat merekomendasikan item yang telah diberi peringkat tinggi oleh satu pengguna kepada pengguna lain yang memiliki kesamaan preferensi.
+
+Kelebihan Collaborative Filtering:
+
+- Mampu memberikan rekomendasi yang personal: Collaborative Filtering dapat memberikan rekomendasi yang sesuai dengan preferensi pengguna secara individu. Ini karena rekomendasi didasarkan pada perilaku atau preferensi pengguna lain yang memiliki kesamaan dengan pengguna yang bersangkutan.
+
+- Tidak memerlukan informasi detil tentang item: CF tidak memerlukan informasi rinci tentang setiap item dalam sistem rekomendasi. Itu hanya membutuhkan data tentang preferensi atau peringkat pengguna terhadap item yang tersedia.
+
+Kekurangan Collaborative Filtering:
+
+- Masalah Cold Start: Metode ini menghadapi masalah saat pengguna baru bergabung dengan sistem rekomendasi atau ketika item baru diperkenalkan. Karena tidak ada data historis tentang pengguna baru atau item baru, Collaborative Filtering kesulitan memberikan rekomendasi yang akurat.
+
+- Scalability: Jika sistem rekomendasi memiliki jumlah pengguna dan item yang sangat besar, perhitungan kesamaan antara pengguna atau item dapat menjadi komputasi yang rumit dan memakan waktu. Skalabilitas bisa menjadi masalah dalam implementasi sistem rekomendasi berbasis Collaborative Filtering.
+
+- Masalah Keberagaman: Collaborative Filtering cenderung memperkuat preferensi yang ada dan mengabaikan rekomendasi yang berbeda atau inovatif. Hal ini dapat menyebabkan pengguna terperangkap dalam "filter bubble" di mana mereka hanya menerima rekomendasi yang serupa dengan apa yang mereka sukai sebelumnya.
+
+Berikut adalah tahapan dari Collaborative Filtering:
+
+1. Data Understanding
+
+    Mengambil data `ratings` sebagai data untuk dijadikan rekomendasi.
+
+    ```py
+    df = ratings.copy()
+    ```
+
+2. Data Preparation
+
+    Pada tahap ini, kita perlu melakukan persiapan data untuk menyandikan (encode) fitur `userId` dan `movieId` ke dalam indeks integer.
+
+    ```py
+    # Mengubah userId menjadi list tanpa nilai yang sama
+    user_ids = df['userId'].unique().tolist()
+    print('list userId: ', user_ids)
+
+    # Melakukan encoding userID
+    user_to_user_encoded = {x: i for i, x in enumerate(user_ids)}
+    print('encoded userId : ', user_to_user_encoded)
+
+    # Melakukan proses encoding angka ke ke userId
+    user_encoded_to_user = {i: x for i, x in enumerate(user_ids)}
+    print('encoded angka ke userId: ', user_encoded_to_user) 
+    ```
+
+    Kemudian petakan `userId` dan `movieId` ke dataframe `ratings`.
+
+    | userId | movieId | rating | user | movie |
+    |--------|---------|--------|------|-------|
+    |   1    |    1    |  4.0   |   0  |   0   |
+    |   1    |    3    |  4.0   |   0  |   1   |
+    |   1    |    6    |  4.0   |   0  |   2   |
+    |   1    |   47    |  5.0   |   0  |   3   |
+    |   1    |   50    |  5.0   |   0  |   4   |
+    |   ...  | 
+
+    Terakhir, cek beberapa hal dalam data seperti jumlah user dan jumlah movie.
+
+    ```py
+    # Mendapatkan jumlah user
+    num_users = len(user_to_user_encoded)
+    print(num_users)
+
+    # Mendapatkan jumlah movie
+    num_movies = len(movie_to_movie_encoded)
+    print(num_movies)
+
+    # Nilai minimum rating
+    min_rating = min(df['rating'])
+
+    # Nilai maksimal rating
+    max_rating = max(df['rating'])
+
+    print('Number of User: {}, Number of Movie: {}, Min Rating: {}, Max Rating: {}'.format(
+        num_users, num_movies, min_rating, max_rating
+    ))
+    ```
+
+    ```
+    610
+    9724
+    Number of User: 610, Number of Movie: 9724, Min Rating: 0.5, Max Rating: 5.0
+    ```
+
+3. Membagi Data untuk Training dan Validasi
+
+    Sebelum membagi data training dan validasi, acak datanya terlebih dahulu agar distribusinya random.
+
+    ```py
+    # Mengacak dataset
+    df = df.sample(frac=1, random_state=42)
+    ```
+
+    Karena data berjumlah banyak, maka kita bagi data dengan rasio 90:10. Namun sebelumnya, kita perlu memetakan data `user` dan `movie` menjadi satu value terlebih dahulu. Lalu, buatlah rating dalam skala 0 sampai 1 agar mudah dalam melakukan proses training.
+
+    ```py
+    # Membuat variabel x untuk mencocokkan data user dan post menjadi satu value
+    x = df[['user', 'movie']].values
+
+    # Membuat variabel y untuk membuat rating menjadi skala 0 sampai 1
+    y = df['rating'].apply(lambda x: (x - min_rating) / (max_rating - min_rating)).values
+
+    # Membagi menjadi 90% data train dan 10% data validasi
+    train_indices = int(0.9 * df.shape[0])
+    x_train, x_val, y_train, y_val = (
+        x[:train_indices],
+        x[train_indices:],
+        y[:train_indices],
+        y[train_indices:]
+    )
+    ```
+
+    Selanjutnya data telah siap untuk dimasukkan ke model.
+
+4. Proses Training
+
+    Pada tahap ini, model menghitung skor kecocokan antara pengguna dan movie dengan teknik embedding. Pertama, kita melakukan proses embedding terhadap data user dan movie. Selanjutnya, lakukan operasi perkalian dot product antara embedding user dan movie. Selain itu, kita juga dapat menambahkan bias untuk setiap user dan movie. Skor kecocokan ditetapkan dalam skala [0,1] dengan fungsi aktivasi sigmoid.
+
+    Di sini, kita membuat class RecommenderNet dengan keras Model class. Kode class RecommenderNet ini terinspirasi dari tutorial dalam situs Keras dengan beberapa adaptasi sesuai kasus yang sedang kita selesaikan. Terapkan kode berikut.
+
+    ```py
+    class RecommenderNet(tf.keras.Model):
+
+    # Insialisasi fungsi
+    def __init__(self, num_users, num_movies, embedding_size, **kwargs):
+        super(RecommenderNet, self).__init__(**kwargs)
+        self.num_users = num_users
+        self.num_movies = num_movies
+        self.embedding_size = embedding_size
+        self.user_embedding = keras.layers.Embedding( # layer embedding user
+            num_users,
+            embedding_size,
+            embeddings_initializer = 'he_normal',
+            embeddings_regularizer = keras.regularizers.l2(1e-6)
+        )
+        self.user_bias = keras.layers.Embedding(num_users, 1) # layer embedding user bias
+        self.movie_embedding = keras.layers.Embedding( # layer embeddings movie
+            num_movies,
+            embedding_size,
+            embeddings_initializer = 'he_normal',
+            embeddings_regularizer = keras.regularizers.l2(1e-6)
+        )
+        self.movie_bias = keras.layers.Embedding(num_movies, 1) # layer embedding movie bias
+
+    def call(self, inputs):
+        user_vector = self.user_embedding(inputs[:,0]) # memanggil layer embedding 1
+        user_bias = self.user_bias(inputs[:, 0]) # memanggil layer embedding 2
+        movie_vector = self.movie_embedding(inputs[:, 1]) # memanggil layer embedding 3
+        movie_bias = self.movie_bias(inputs[:, 1]) # memanggil layer embedding 4
+
+        dot_user_movie = tf.tensordot(user_vector, movie_vector, 2)
+
+        x = dot_user_movie + user_bias + movie_bias
+
+        return tf.nn.sigmoid(x) # activation sigmoid
+    ```
+
+    Selanjutnya, lakukan proses compile terhadap model.
+
+    ```py
+    model = RecommenderNet(num_users, num_movies, 50) # inisialisasi model
+
+    # model compile
+    model.compile(
+        loss = tf.keras.losses.BinaryCrossentropy(),
+        optimizer = keras.optimizers.Adam(learning_rate=0.001),
+        metrics=[tf.keras.metrics.RootMeanSquaredError()]
+    )
+    ```
+
+    Model ini menggunakan Binary Crossentropy untuk menghitung loss function, Adam (Adaptive Moment Estimation) sebagai optimizer, dan root mean squared error (RMSE) sebagai metrics evaluation. 
+
+    Langkah berikutnya, mulailah proses training.
+
+    ```py
+    # Memulai training
+
+    history = model.fit(
+        x = x_train,
+        y = y_train,
+        batch_size = 64,
+        epochs = 5,
+        validation_data = (x_val, y_val)
+    )
+    ``` 
+
+    Setelah melakukan fit model, maka model siap digunakan untuk menghasilkan rekomendasi.
+
+5. Mendapatkan Rekomendasi Movie
+
+    Untuk mendapatkan rekomendasi movie, pertama kita ambil sampel user secara acak dan definisikan variabel movie_not_watched yang merupakan daftar movie yang belum pernah dikunjungi oleh pengguna. Anda mungkin bertanya-tanya, mengapa kita perlu menentukan daftar movie_not_watched? Hal ini karena daftar movie_not_watched inilah yang akan menjadi movie yang kita rekomendasikan. 
+
+    Sebelumnya, pengguna telah memberi rating pada beberapa movie yang telah mereka kunjungi. Kita menggunakan rating ini untuk membuat rekomendasi movie yang mungkin cocok untuk pengguna. Nah, movie yang akan direkomendasikan tentulah movie yang belum pernah dikunjungi oleh pengguna. Oleh karena itu, kita perlu membuat variabel movie_not_watched sebagai daftar movie untuk direkomendasikan pada pengguna.
+
+    Variabel movie_not_watched diperoleh dengan menggunakan operator bitwise (~) pada variabel movie_watched_by_user.
+
+    Terapkan kode berikut.
+
+    ```py
+    movie_df = fix_movies.copy()
+    df = pd.read_csv('ratings.csv')
+
+    # Mengambil sample user
+    user_id = df.userId.sample(1).iloc[0]
+    movie_watched_by_user = df[df.userId == user_id]
+
+    # Operator bitwise (~), bisa diketahui di sini https://docs.python.org/3/reference/expressions.html
+    movie_not_watched = movie_df[~movie_df['movieId'].isin(movie_watched_by_user.movieId.values)]['movieId']
+    movie_not_watched = list(
+        set(movie_not_watched)
+        .intersection(set(movie_to_movie_encoded.keys()))
+    )
+
+    movie_not_watched = [[movie_to_movie_encoded.get(x)] for x in movie_not_watched]
+    movie_not_watched
+    user_encoder = user_to_user_encoded.get(user_id)
+    user_movie_array = np.hstack(
+        ([[user_encoder]] * len(movie_not_watched), movie_not_watched)
+    )
+    ```
+
+    Selanjutnya, untuk memperoleh rekomendasi restoran, gunakan fungsi model.predict() dari library Keras dengan menerapkan kode berikut.
+
+    ```py
+    ratings = model.predict(user_movie_array).flatten()
+
+    top_ratings_indices = ratings.argsort()[-10:][::-1]
+    recommended_movie_ids = [
+        movie_encoded_to_movie.get(movie_not_watched[x][0]) for x in top_ratings_indices
+    ]
+
+    print('Showing recommendations for users: {}'.format(user_id))
+    print('===' * 9)
+    print('movie with high ratings from user')
+    print('----' * 8)
+
+    top_movie_user = (
+        movie_watched_by_user.sort_values(
+            by = 'rating',
+            ascending=False
+        )
+        .head(5)
+        .movieId.values
+    )
+
+    movie_df_rows = movie_df[movie_df['movieId'].isin(top_movie_user)]
+    for idx, row in enumerate(movie_df_rows.itertuples(index=False), start=1):
+        print("{}. Title:".format(idx), row[1])
+        print("   Genres:", row[2])
+        print()
+
+    print('----' * 8)
+    print('Top 10 movie recommendation')
+    print('----' * 8)
+
+    recommended_movie = movie_df[movie_df['movieId'].isin(recommended_movie_ids)]
+    for idx, row in enumerate(recommended_movie.itertuples(index=False), start=1):
+        print("{}. Title:".format(idx), row[1])
+        print("   Genres:", row[2])
+        print()
+    ```
+
+    Berikut rekomendasi yang dihasilkan dari model.
+
+    ```
+    Showing recommendations for users: 425
+    ===========================
+    movie with high ratings from user
+    --------------------------------
+    1. Title: Léon: The Professional (a.k.a. The Professional) (Léon) (1994)
+    Genres: Action|Crime|Drama|Thriller
+
+    2. Title: Shawshank Redemption, The (1994)
+    Genres: Crime|Drama
+
+    3. Title: Forrest Gump (1994)
+    Genres: Comedy|Drama|Romance|War
+
+    4. Title: Trainspotting (1996)
+    Genres: Comedy|Crime|Drama
+
+    5. Title: Sleepers (1996)
+    Genres: Thriller
+
+    --------------------------------
+    Top 10 movie recommendation
+    --------------------------------
+    1. Title: Rear Window (1954)
+    Genres: Mystery|Thriller
+
+    2. Title: Princess Bride, The (1987)
+    Genres: Action|Adventure|Comedy|Fantasy|Romance
+
+    3. Title: Goodfellas (1990)
+    Genres: Crime|Drama
+
+    4. Title: Amadeus (1984)
+    Genres: Drama
+
+    5. Title: Raging Bull (1980)
+    Genres: Drama
+
+    6. Title: Boot, Das (Boat, The) (1981)
+    Genres: Action|Drama|War
+
+    7. Title: Glory (1989)
+    Genres: Drama|War
+
+    8. Title: Graduate, The (1967)
+    Genres: Comedy|Drama|Romance
+
+    9. Title: Chinatown (1974)
+    Genres: Crime|Film-Noir|Mystery|Thriller
+
+    10. Title: Cool Hand Luke (1967)
+    Genres: Drama
+   ```
+
+    Hasil di atas adalah rekomendasi untuk user dengan id 425. Dari output tersebut, kita dapat membandingkan antara Movie with high ratings from user dan Top 10 movie recommendation untuk user. 
+
+    Perhatikanlah, beberapa movie rekomendasi menyediakan genre yang sesuai dengan rating user. Kita memperoleh movie dengan genre dominan Drama, sesuai dengan rating user yang lebih dominan movie bergenre Drama. Begitu pula dengan genre lainnya. Prediksi yang cukup sesuai.
+    
 
 ## Evaluation
 Pada bagian ini Anda perlu menyebutkan metrik evaluasi yang digunakan. Kemudian, jelaskan hasil proyek berdasarkan metrik evaluasi tersebut.
