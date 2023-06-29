@@ -276,14 +276,7 @@ Pada proyek ini, Content Based Filtering diawali dengan TF-IDF Vectorizer.
     ```
 
     Untuk melihat tf-idf matrix, buatlah *DataFrame* dengan fitur penting yang dihasilkan sebelumnya sebagai kolom dan ``title`` *movie* sebagai baris.
-
-    ```py
-    pd.DataFrame(
-    tfidf_matrix.todense(),
-    columns=tf.get_feature_names_out(),
-    index=fix_movies.title
-    ).sample(10, axis=1).sample(10, axis=0)
-    ```
+    
 
     Tabel 4. Tabel matrix tf-idf untuk beberapa movie dan genre
 
@@ -350,29 +343,9 @@ Pada proyek ini, Content Based Filtering diawali dengan TF-IDF Vectorizer.
 
     sebelum mulai menulis kodenya, ingatlah kembali definisi sistem rekomendasi yang menyatakan bahwa keluaran sistem ini adalah berupa top-N recommendation. Oleh karena itu, kita akan memberikan sejumlah rekomendasi movie pada pengguna yang diatur dalam parameter k.
 
-    ```py
-    def movie_recommendations(title, similarity_data=cosine_sim_df, items=data, k=5):
     
-    # Mengambil data dengan menggunakan argpartition untuk melakukan partisi secara tidak langsung sepanjang sumbu yang diberikan
-    # Dataframe diubah menjadi numpy
-    # Range(start, stop, step)
-    index = similarity_data.loc[:,title].to_numpy().argpartition(
-        range(-1, -k, -1))
-
-    # Mengambil data dengan similarity terbesar dari index yang ada
-    closest = similarity_data.columns[index[-1:-(k+2):-1]]
-
-    # Drop title agar nama title yang dicari tidak muncul dalam daftar rekomendasi
-    closest = closest.drop(title, errors='ignore')
-
-    return pd.DataFrame(closest).merge(items).head(k)
-    ```
-
     Kemudian ambil satu sampel movie untuk diberikan rekomendasi pada movie tersebut.
 
-    ```py
-    data[data.title.eq('Unleashed (Danny the Dog) (2005)')]
-    ```
 
     Tabel 6. sampel movie sebagai rujukan untuk rekomendasi.
 
@@ -439,20 +412,6 @@ Berikut adalah tahapan dari Collaborative Filtering:
 
     Pada tahap ini, kita perlu melakukan persiapan data untuk menyandikan (encode) fitur `userId` dan `movieId` ke dalam indeks integer.
 
-    ```py
-    # Mengubah userId menjadi list tanpa nilai yang sama
-    user_ids = df['userId'].unique().tolist()
-    print('list userId: ', user_ids)
-
-    # Melakukan encoding userID
-    user_to_user_encoded = {x: i for i, x in enumerate(user_ids)}
-    print('encoded userId : ', user_to_user_encoded)
-
-    # Melakukan proses encoding angka ke ke userId
-    user_encoded_to_user = {i: x for i, x in enumerate(user_ids)}
-    print('encoded angka ke userId: ', user_encoded_to_user) 
-    ```
-
     Kemudian petakan `userId` dan `movieId` ke dataframe `ratings`.
 
     Tabel 8. pemetaan *encode* *user* dan *movie* ke *dataframe* `ratings`
@@ -468,59 +427,21 @@ Berikut adalah tahapan dari Collaborative Filtering:
 
     Terakhir, cek beberapa hal dalam data seperti jumlah user dan jumlah movie.
 
-    ```py
-    # Mendapatkan jumlah user
-    num_users = len(user_to_user_encoded)
-    print(num_users)
-
-    # Mendapatkan jumlah movie
-    num_movies = len(movie_to_movie_encoded)
-    print(num_movies)
-
-    # Nilai minimum rating
-    min_rating = min(df['rating'])
-
-    # Nilai maksimal rating
-    max_rating = max(df['rating'])
-
-    print('Number of User: {}, Number of Movie: {}, Min Rating: {}, Max Rating: {}'.format(
-        num_users, num_movies, min_rating, max_rating
-    ))
-    ```
-
     ```
     610
     9724
-    Number of User: 610, Number of Movie: 9724, Min Rating: 0.5, Max Rating: 5.0
+    Number of User: 610,
+    Number of Movie: 9724,
+    Min Rating: 0.5,
+    Max Rating: 5.0
     ```
 
 3. Membagi Data untuk Training dan Validasi
 
     Sebelum membagi data training dan validasi, acak datanya terlebih dahulu agar distribusinya random.
 
-    ```py
-    # Mengacak dataset
-    df = df.sample(frac=1, random_state=42)
-    ```
 
     Karena data berjumlah banyak, maka kita bagi data dengan rasio 90:10. Namun sebelumnya, kita perlu memetakan data `user` dan `movie` menjadi satu value terlebih dahulu. Lalu, buatlah rating dalam skala 0 sampai 1 agar mudah dalam melakukan proses training.
-
-    ```py
-    # Membuat variabel x untuk mencocokkan data user dan post menjadi satu value
-    x = df[['user', 'movie']].values
-
-    # Membuat variabel y untuk membuat rating menjadi skala 0 sampai 1
-    y = df['rating'].apply(lambda x: (x - min_rating) / (max_rating - min_rating)).values
-
-    # Membagi menjadi 90% data train dan 10% data validasi
-    train_indices = int(0.9 * df.shape[0])
-    x_train, x_val, y_train, y_val = (
-        x[:train_indices],
-        x[train_indices:],
-        y[:train_indices],
-        y[train_indices:]
-    )
-    ```
 
     Selanjutnya data telah siap untuk dimasukkan ke model.
 
@@ -528,73 +449,14 @@ Berikut adalah tahapan dari Collaborative Filtering:
 
     Pada tahap ini, model menghitung skor kecocokan antara pengguna dan movie dengan teknik embedding. Pertama, kita melakukan proses embedding terhadap data user dan movie. Selanjutnya, lakukan operasi perkalian dot product antara embedding user dan movie. Selain itu, kita juga dapat menambahkan bias untuk setiap user dan movie. Skor kecocokan ditetapkan dalam skala [0,1] dengan fungsi aktivasi sigmoid.
 
-    Di sini, kita membuat class RecommenderNet dengan keras Model class. Kode class RecommenderNet ini terinspirasi dari tutorial dalam situs Keras dengan beberapa adaptasi sesuai kasus yang sedang kita selesaikan. Terapkan kode berikut.
+    Di sini, kita membuat class RecommenderNet dengan keras Model class. Kode class RecommenderNet ini terinspirasi dari tutorial dalam situs Keras dengan beberapa adaptasi.
 
-    ```py
-    class RecommenderNet(tf.keras.Model):
-
-    # Insialisasi fungsi
-    def __init__(self, num_users, num_movies, embedding_size, **kwargs):
-        super(RecommenderNet, self).__init__(**kwargs)
-        self.num_users = num_users
-        self.num_movies = num_movies
-        self.embedding_size = embedding_size
-        self.user_embedding = keras.layers.Embedding( # layer embedding user
-            num_users,
-            embedding_size,
-            embeddings_initializer = 'he_normal',
-            embeddings_regularizer = keras.regularizers.l2(1e-6)
-        )
-        self.user_bias = keras.layers.Embedding(num_users, 1) # layer embedding user bias
-        self.movie_embedding = keras.layers.Embedding( # layer embeddings movie
-            num_movies,
-            embedding_size,
-            embeddings_initializer = 'he_normal',
-            embeddings_regularizer = keras.regularizers.l2(1e-6)
-        )
-        self.movie_bias = keras.layers.Embedding(num_movies, 1) # layer embedding movie bias
-
-    def call(self, inputs):
-        user_vector = self.user_embedding(inputs[:,0]) # memanggil layer embedding 1
-        user_bias = self.user_bias(inputs[:, 0]) # memanggil layer embedding 2
-        movie_vector = self.movie_embedding(inputs[:, 1]) # memanggil layer embedding 3
-        movie_bias = self.movie_bias(inputs[:, 1]) # memanggil layer embedding 4
-
-        dot_user_movie = tf.tensordot(user_vector, movie_vector, 2)
-
-        x = dot_user_movie + user_bias + movie_bias
-
-        return tf.nn.sigmoid(x) # activation sigmoid
-    ```
-
+    
     Selanjutnya, lakukan proses compile terhadap model.
-
-    ```py
-    model = RecommenderNet(num_users, num_movies, 50) # inisialisasi model
-
-    # model compile
-    model.compile(
-        loss = tf.keras.losses.BinaryCrossentropy(),
-        optimizer = keras.optimizers.Adam(learning_rate=0.001),
-        metrics=[tf.keras.metrics.RootMeanSquaredError()]
-    )
-    ```
 
     Model ini menggunakan Binary Crossentropy untuk menghitung loss function, Adam (Adaptive Moment Estimation) sebagai optimizer, dan root mean squared error (RMSE) sebagai metrics evaluation. 
 
-    Langkah berikutnya, mulailah proses training.
-
-    ```py
-    # Memulai training
-
-    history = model.fit(
-        x = x_train,
-        y = y_train,
-        batch_size = 64,
-        epochs = 5,
-        validation_data = (x_val, y_val)
-    )
-    ``` 
+    Langkah berikutnya, mulailah proses training dengan batch_size = 64 dan epochs = 5.
 
     Setelah melakukan fit model, maka model siap digunakan untuk menghasilkan rekomendasi.
 
@@ -606,71 +468,9 @@ Berikut adalah tahapan dari Collaborative Filtering:
 
     Variabel movie_not_watched diperoleh dengan menggunakan operator bitwise (~) pada variabel movie_watched_by_user.
 
-    Terapkan kode berikut.
+   
+    Selanjutnya, untuk memperoleh rekomendasi restoran, gunakan fungsi model.predict() dari library Keras.
 
-    ```py
-    movie_df = fix_movies.copy()
-    df = pd.read_csv('ratings.csv')
-
-    # Mengambil sample user
-    user_id = df.userId.sample(1).iloc[0]
-    movie_watched_by_user = df[df.userId == user_id]
-
-    # Operator bitwise (~), bisa diketahui di sini https://docs.python.org/3/reference/expressions.html
-    movie_not_watched = movie_df[~movie_df['movieId'].isin(movie_watched_by_user.movieId.values)]['movieId']
-    movie_not_watched = list(
-        set(movie_not_watched)
-        .intersection(set(movie_to_movie_encoded.keys()))
-    )
-
-    movie_not_watched = [[movie_to_movie_encoded.get(x)] for x in movie_not_watched]
-    movie_not_watched
-    user_encoder = user_to_user_encoded.get(user_id)
-    user_movie_array = np.hstack(
-        ([[user_encoder]] * len(movie_not_watched), movie_not_watched)
-    )
-    ```
-
-    Selanjutnya, untuk memperoleh rekomendasi restoran, gunakan fungsi model.predict() dari library Keras dengan menerapkan kode berikut.
-
-    ```py
-    ratings = model.predict(user_movie_array).flatten()
-
-    top_ratings_indices = ratings.argsort()[-10:][::-1]
-    recommended_movie_ids = [
-        movie_encoded_to_movie.get(movie_not_watched[x][0]) for x in top_ratings_indices
-    ]
-
-    print('Showing recommendations for users: {}'.format(user_id))
-    print('===' * 9)
-    print('movie with high ratings from user')
-    print('----' * 8)
-
-    top_movie_user = (
-        movie_watched_by_user.sort_values(
-            by = 'rating',
-            ascending=False
-        )
-        .head(5)
-        .movieId.values
-    )
-
-    movie_df_rows = movie_df[movie_df['movieId'].isin(top_movie_user)]
-    for idx, row in enumerate(movie_df_rows.itertuples(index=False), start=1):
-        print("{}. Title:".format(idx), row[1])
-        print("   Genres:", row[2])
-        print()
-
-    print('----' * 8)
-    print('Top 10 movie recommendation')
-    print('----' * 8)
-
-    recommended_movie = movie_df[movie_df['movieId'].isin(recommended_movie_ids)]
-    for idx, row in enumerate(recommended_movie.itertuples(index=False), start=1):
-        print("{}. Title:".format(idx), row[1])
-        print("   Genres:", row[2])
-        print()
-    ```
 
     Berikut rekomendasi yang dihasilkan dari model.
 
