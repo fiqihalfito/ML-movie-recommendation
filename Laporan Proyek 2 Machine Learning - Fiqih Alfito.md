@@ -27,7 +27,7 @@ Semua poin di atas harus diuraikan dengan jelas. Anda bebas menuliskan berapa pe
 
 ### Solution statements
 
-Untuk mencapai goals yang diinginkan, kita akan membuat sistem rekomendasi dengan alur sebagai berikut.
+Untuk mencapai goals yang diinginkan, penulis akan membuat sistem rekomendasi dengan alur sebagai berikut.
 
 1. Data Understanding
 

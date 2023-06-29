@@ -41,8 +41,6 @@ movies
 
 movies.genres.unique()
 
-# berhubung genres memiliki beberapa genres, maka akan dipilih salah satu
-
 """## Ratings Variable"""
 
 ratings.info()
@@ -99,36 +97,6 @@ print("jumlah movie tidak ada genre : ", len(fix_movies[fix_movies['genres'] == 
 genre_list = fix_movies.genres.str.split("|").tolist()
 genre = list(set(itertools.chain(*genre_list)))
 genre
-
-from sklearn.feature_extraction.text import TfidfVectorizer
-
-# Inisialisasi TfidfVectorizer
-tf = TfidfVectorizer(token_pattern=r"(?u)\b\w[\w-]*\w\b")
-
-# Melakukan perhitungan idf pada data cuisine
-tf.fit(fix_movies['genres'])
-
-# Mapping array dari fitur index integer ke fitur nama
-tf.get_feature_names_out()
-
-# Melakukan fit lalu ditransformasikan ke bentuk matrix
-tfidf_matrix = tf.fit_transform(fix_movies['genres'])
-
-# Melihat ukuran matrix tfidf
-tfidf_matrix.shape
-
-# Mengubah vektor tf-idf dalam bentuk matriks dengan fungsi todense()
-tfidf_matrix.todense()
-
-# Membuat dataframe untuk melihat tf-idf matrix
-# Kolom diisi dengan jenis masakan
-# Baris diisi dengan nama resto
-
-pd.DataFrame(
-    tfidf_matrix.todense(),
-    columns=tf.get_feature_names_out(),
-    index=fix_movies.title
-).sample(10, axis=1).sample(10, axis=0)
 
 """# Model Development dengan Content Based Filtering
 
@@ -313,7 +281,7 @@ x = df[['user', 'movie']].values
 # Membuat variabel y untuk membuat rating menjadi skala 0 sampai 1
 y = df['rating'].apply(lambda x: (x - min_rating) / (max_rating - min_rating)).values
 
-# Membagi menjadi 80% data train dan 20% data validasi
+# Membagi menjadi 90% data train dan 10% data validasi
 train_indices = int(0.9 * df.shape[0])
 x_train, x_val, y_train, y_val = (
     x[:train_indices],
