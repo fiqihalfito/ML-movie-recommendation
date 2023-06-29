@@ -797,6 +797,7 @@ plt.show()
 
 maka akan tampil gambar berikut:
 
+![visual metrik](https://github.com/fiqihalfito/ML-movie-recommendation/assets/112739333/5a471719-b832-4675-bcfc-7d34a2acb148)
 
 Gambar 1. Visualisasi Metrik Collaborative Filtering
 
