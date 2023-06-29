@@ -752,67 +752,101 @@ Berikut adalah tahapan dari Collaborative Filtering:
 
 ## Evaluation
 
+Dalam proyek ini, kedua solusi rekomendasi mempunyai masing-masing cara evaluasi. Berikut evaluasi dari solusi-solusi rekomendasi. 
+
+### **Evaluasi Content Based Filtering**
+
+Untuk mengevaluasi hasil rekomendasi Content Based Filtering, penulis menggunakan Precision. Metrik ini mengukur sejauh mana rekomendasi yang diberikan relevan dengan preferensi pengguna. Presisi dihitung dengan membagi jumlah rekomendasi yang relevan dengan jumlah total rekomendasi yang diberikan.
+
+```
+Presisi = (Jumlah Rekomendasi yang Relevan) / (Jumlah Total Rekomendasi)
+```
+
+Pada proyek ini, sampel movie yang digunakan sebagai berikut:
+
+Tabel 9. sampel movie sebagai rujukan untuk rekomendasi.
+
+| movieId | title                             | genres                      |
+|---------|-----------------------------------|-----------------------------|
+| 33437   | Unleashed (Danny the Dog) (2005)  | Action/Crime/Drama/Thriller |
+
+Setelah dijalankan fungsi `movie_recommendation()`, maka didapat rekomendasi movie berikut:
+
+Tabel 10. Hasil rekomendasi Content-Based Filtering.
+
+| title                              | movieId | genres                            |
+|------------------------------------|---------|-----------------------------------|
+| Collateral (2004)                  | 8798    | Action/Crime/Drama/Thriller       |
+| To Live and Die in L.A. (1985)     | 7040    | Action/Crime/Drama/Thriller       |
+| The Fate of the Furious (2017)     | 170875  | Action/Crime/Drama/Thriller       |
+| Pusher II: With Blood on My Hands (2004) | 34811   | Action/Crime/Drama/Thriller       |
+| Bullitt (1968)                     | 7076    | Action/Crime/Drama/Thriller       |
+
+
+
+### **Evaluasi Collaborative Filtering**
+
 Untuk mengevaluasi model yang telah dilatih, proyek ini menggunakan metrik `root mean squared error (RMSE)`. Root Mean Squared Error (RMSE) adalah metrik evaluasi yang digunakan untuk mengukur tingkat kesalahan atau deviasi dari prediksi model dalam perbandingan dengan nilai sebenarnya pada masalah regresi pada machine learning. RMSE merupakan akar kuadrat dari Mean Squared Error (MSE).
 
-### Metrik Root Mean Squared Error (RMSE) 
+- **Metrik Root Mean Squared Error (RMSE)** 
 
-Root Mean Squared Error (RMSE) adalah metrik evaluasi yang umum digunakan dalam sistem rekomendasi untuk mengukur sejauh mana prediksi rekomendasi yang dibuat oleh sistem mendekati nilai yang sebenarnya atau preferensi pengguna. RMSE menghitung perbedaan antara nilai prediksi dan nilai sebenarnya dari set data pengujian.
+    Root Mean Squared Error (RMSE) adalah metrik evaluasi yang umum digunakan dalam sistem rekomendasi untuk mengukur sejauh mana prediksi rekomendasi yang dibuat oleh sistem mendekati nilai yang sebenarnya atau preferensi pengguna. RMSE menghitung perbedaan antara nilai prediksi dan nilai sebenarnya dari set data pengujian.
 
-Rumus RMSE adalah sebagai berikut:
+    Rumus RMSE adalah sebagai berikut:
 
-```
-RMSE = sqrt((1/n) * Σ(yi - ŷi)^2)
-```
+    ```
+    RMSE = sqrt((1/n) * Σ(yi - ŷi)^2)
+    ```
 
-Di sini:
-- n adalah jumlah data pengujian.
-- yi adalah nilai sebenarnya.
-- ŷi adalah nilai prediksi.
+    Di sini:
+    - n adalah jumlah data pengujian.
+    - yi adalah nilai sebenarnya.
+    - ŷi adalah nilai prediksi.
 
-Cara kerja RMSE dalam sistem rekomendasi adalah sebagai berikut:
+    Cara kerja RMSE dalam sistem rekomendasi adalah sebagai berikut:
 
-1. Membangun model: Sistem rekomendasi memanfaatkan berbagai algoritma seperti Collaborative Filtering, Content-Based Filtering, atau Hybrid Filtering untuk membangun model rekomendasi. Model ini didasarkan pada data pelatihan yang mencakup preferensi pengguna sebelumnya.
+    1. Membangun model: Sistem rekomendasi memanfaatkan berbagai algoritma seperti Collaborative Filtering, Content-Based Filtering, atau Hybrid Filtering untuk membangun model rekomendasi. Model ini didasarkan pada data pelatihan yang mencakup preferensi pengguna sebelumnya.
 
-2. Menghitung prediksi: Setelah model dibangun, sistem rekomendasi menggunakan model tersebut untuk membuat prediksi tentang preferensi pengguna untuk item-item yang belum dilihat atau dinilai. Prediksi ini didasarkan pada fitur-fitur atau atribut-atribut item serta informasi pengguna yang relevan.
+    2. Menghitung prediksi: Setelah model dibangun, sistem rekomendasi menggunakan model tersebut untuk membuat prediksi tentang preferensi pengguna untuk item-item yang belum dilihat atau dinilai. Prediksi ini didasarkan pada fitur-fitur atau atribut-atribut item serta informasi pengguna yang relevan.
 
-3. Membandingkan dengan nilai sebenarnya: Setelah mendapatkan prediksi, sistem rekomendasi membandingkannya dengan nilai sebenarnya atau preferensi yang diketahui dari data pengujian. Selisih antara prediksi dan nilai sebenarnya untuk setiap item dihitung.
+    3. Membandingkan dengan nilai sebenarnya: Setelah mendapatkan prediksi, sistem rekomendasi membandingkannya dengan nilai sebenarnya atau preferensi yang diketahui dari data pengujian. Selisih antara prediksi dan nilai sebenarnya untuk setiap item dihitung.
 
-4. Menghitung RMSE: Selisih antara prediksi dan nilai sebenarnya untuk setiap item dijumlahkan dan dinormalisasi dengan membaginya dengan jumlah data pengujian (n). Akar kuadrat dari hasil normalisasi ini memberikan RMSE, yang merupakan pengukuran kesalahan rata-rata antara prediksi dan nilai sebenarnya.
+    4. Menghitung RMSE: Selisih antara prediksi dan nilai sebenarnya untuk setiap item dijumlahkan dan dinormalisasi dengan membaginya dengan jumlah data pengujian (n). Akar kuadrat dari hasil normalisasi ini memberikan RMSE, yang merupakan pengukuran kesalahan rata-rata antara prediksi dan nilai sebenarnya.
 
-RMSE memberikan informasi tentang seberapa dekat prediksi sistem rekomendasi dengan preferensi pengguna yang sebenarnya. Semakin kecil nilai RMSE, semakin akurat sistem rekomendasi dalam melakukan prediksi dan semakin baik kualitas rekomendasinya. Dalam pengembangan sistem rekomendasi, tujuan utama adalah untuk meminimalkan RMSE agar prediksi semakin mendekati nilai sebenarnya.
+    RMSE memberikan informasi tentang seberapa dekat prediksi sistem rekomendasi dengan preferensi pengguna yang sebenarnya. Semakin kecil nilai RMSE, semakin akurat sistem rekomendasi dalam melakukan prediksi dan semakin baik kualitas rekomendasinya. Dalam pengembangan sistem rekomendasi, tujuan utama adalah untuk meminimalkan RMSE agar prediksi semakin mendekati nilai sebenarnya.
 
-### Visualisasi Metrik
+- **Visualisasi Metrik**
 
-Untuk melihat visualisasi proses training, mari kita plot metrik evaluasi dengan matplotlib. Terapkan kode berikut.
+    Untuk melihat visualisasi proses training, mari kita plot metrik evaluasi dengan matplotlib. Terapkan kode berikut.
 
-```py
-plt.plot(history.history['root_mean_squared_error'])
-plt.plot(history.history['val_root_mean_squared_error'])
-plt.title('model_metrics')
-plt.ylabel('root_mean_squared_error')
-plt.xlabel('epoch')
-plt.legend(['train', 'test'], loc='upper left')
-plt.show()
-```
+    ```py
+    plt.plot(history.history['root_mean_squared_error'])
+    plt.plot(history.history['val_root_mean_squared_error'])
+    plt.title('model_metrics')
+    plt.ylabel('root_mean_squared_error')
+    plt.xlabel('epoch')
+    plt.legend(['train', 'test'], loc='upper left')
+    plt.show()
+    ```
 
-maka akan tampil gambar berikut:
+    maka akan tampil gambar berikut:
 
-![visual metrik](https://github.com/fiqihalfito/ML-movie-recommendation/assets/112739333/5a471719-b832-4675-bcfc-7d34a2acb148)
+    ![visual metrik](https://github.com/fiqihalfito/ML-movie-recommendation/assets/112739333/5a471719-b832-4675-bcfc-7d34a2acb148)
 
-Gambar 1. Visualisasi Metrik Collaborative Filtering
+    Gambar 1. Visualisasi Metrik Collaborative Filtering
 
 
-Pada hasil fit model yang Anda berikan, RMSE dihitung untuk data pelatihan (train) dan data validasi (validation) setiap epoch. Berikut adalah ringkasan hasil RMSE pada setiap epoch:
+    Pada hasil fit model, RMSE dihitung untuk data pelatihan (train) dan data validasi (validation) setiap epoch. Berikut adalah ringkasan hasil RMSE pada setiap epoch:
 
-- Pada Epoch 1, RMSE pada data pelatihan adalah 0.2322 dan pada data validasi adalah 0.2148.
-- Pada Epoch 2, RMSE pada data pelatihan turun menjadi 0.2081 dan pada data validasi turun menjadi 0.2118.
-- Pada Epoch 3, RMSE pada data pelatihan menjadi 0.2029 dan pada data validasi menjadi 0.2081.
-- Pada Epoch 4, RMSE pada data pelatihan menjadi 0.2016 dan pada data validasi menjadi 0.2071.
-- Pada Epoch 5, RMSE pada data pelatihan menjadi 0.2010 dan pada data validasi menjadi 0.2055.
+    - Pada Epoch 1, RMSE pada data pelatihan adalah 0.2322 dan pada data validasi adalah 0.2148.
+    - Pada Epoch 2, RMSE pada data pelatihan turun menjadi 0.2081 dan pada data validasi turun menjadi 0.2118.
+    - Pada Epoch 3, RMSE pada data pelatihan menjadi 0.2029 dan pada data validasi menjadi 0.2081.
+    - Pada Epoch 4, RMSE pada data pelatihan menjadi 0.2016 dan pada data validasi menjadi 0.2071.
+    - Pada Epoch 5, RMSE pada data pelatihan menjadi 0.2010 dan pada data validasi menjadi 0.2055.
 
-Dari hasil RMSE tersebut, dapat dilihat bahwa baik pada data pelatihan maupun data validasi, RMSE mengalami penurunan setiap epoch. Hal ini menunjukkan bahwa model semakin mempelajari pola dalam data dan semakin baik dalam memprediksi nilai target.
+    Dari hasil RMSE tersebut, dapat dilihat bahwa baik pada data pelatihan maupun data validasi, RMSE mengalami penurunan setiap epoch. Hal ini menunjukkan bahwa model semakin mempelajari pola dalam data dan semakin baik dalam memprediksi nilai target.
 
-Selain itu, RMSE pada data validasi juga memberikan gambaran tentang performa model pada data yang tidak digunakan dalam proses pelatihan. Jika RMSE pada data validasi tetap rendah dan mendekati RMSE pada data pelatihan, maka model memiliki kemampuan umum dalam memprediksi rating tanpa overfitting pada data pelatihan.
+    Selain itu, RMSE pada data validasi juga memberikan gambaran tentang performa model pada data yang tidak digunakan dalam proses pelatihan. Jika RMSE pada data validasi tetap rendah dan mendekati RMSE pada data pelatihan, maka model memiliki kemampuan umum dalam memprediksi rating tanpa overfitting pada data pelatihan.
 
 
 ## Conclusion
