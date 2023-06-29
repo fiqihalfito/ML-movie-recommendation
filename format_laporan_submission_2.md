@@ -712,9 +712,72 @@ Berikut adalah tahapan dari Collaborative Filtering:
     Hasil di atas adalah rekomendasi untuk user dengan id 425. Dari output tersebut, kita dapat membandingkan antara Movie with high ratings from user dan Top 10 movie recommendation untuk user. 
 
     Perhatikanlah, beberapa movie rekomendasi menyediakan genre yang sesuai dengan rating user. Kita memperoleh movie dengan genre dominan Drama, sesuai dengan rating user yang lebih dominan movie bergenre Drama. Begitu pula dengan genre lainnya. Prediksi yang cukup sesuai.
-    
 
 ## Evaluation
+
+Untuk mengevaluasi model yang telah dilatih, proyek ini menggunakan metrik `root mean squared error (RMSE)`. Root Mean Squared Error (RMSE) adalah metrik evaluasi yang digunakan untuk mengukur tingkat kesalahan atau deviasi dari prediksi model dalam perbandingan dengan nilai sebenarnya pada masalah regresi pada machine learning. RMSE merupakan akar kuadrat dari Mean Squared Error (MSE).
+
+### Metrik Root Mean Squared Error (RMSE) 
+
+Root Mean Squared Error (RMSE) adalah metrik evaluasi yang umum digunakan dalam sistem rekomendasi untuk mengukur sejauh mana prediksi rekomendasi yang dibuat oleh sistem mendekati nilai yang sebenarnya atau preferensi pengguna. RMSE menghitung perbedaan antara nilai prediksi dan nilai sebenarnya dari set data pengujian.
+
+Rumus RMSE adalah sebagai berikut:
+
+```
+RMSE = sqrt((1/n) * Σ(yi - ŷi)^2)
+```
+
+Di sini:
+- n adalah jumlah data pengujian.
+- yi adalah nilai sebenarnya.
+- ŷi adalah nilai prediksi.
+
+Cara kerja RMSE dalam sistem rekomendasi adalah sebagai berikut:
+
+1. Membangun model: Sistem rekomendasi memanfaatkan berbagai algoritma seperti Collaborative Filtering, Content-Based Filtering, atau Hybrid Filtering untuk membangun model rekomendasi. Model ini didasarkan pada data pelatihan yang mencakup preferensi pengguna sebelumnya.
+
+2. Menghitung prediksi: Setelah model dibangun, sistem rekomendasi menggunakan model tersebut untuk membuat prediksi tentang preferensi pengguna untuk item-item yang belum dilihat atau dinilai. Prediksi ini didasarkan pada fitur-fitur atau atribut-atribut item serta informasi pengguna yang relevan.
+
+3. Membandingkan dengan nilai sebenarnya: Setelah mendapatkan prediksi, sistem rekomendasi membandingkannya dengan nilai sebenarnya atau preferensi yang diketahui dari data pengujian. Selisih antara prediksi dan nilai sebenarnya untuk setiap item dihitung.
+
+4. Menghitung RMSE: Selisih antara prediksi dan nilai sebenarnya untuk setiap item dijumlahkan dan dinormalisasi dengan membaginya dengan jumlah data pengujian (n). Akar kuadrat dari hasil normalisasi ini memberikan RMSE, yang merupakan pengukuran kesalahan rata-rata antara prediksi dan nilai sebenarnya.
+
+RMSE memberikan informasi tentang seberapa dekat prediksi sistem rekomendasi dengan preferensi pengguna yang sebenarnya. Semakin kecil nilai RMSE, semakin akurat sistem rekomendasi dalam melakukan prediksi dan semakin baik kualitas rekomendasinya. Dalam pengembangan sistem rekomendasi, tujuan utama adalah untuk meminimalkan RMSE agar prediksi semakin mendekati nilai sebenarnya.
+
+### Visualisasi Metrik
+
+Untuk melihat visualisasi proses training, mari kita plot metrik evaluasi dengan matplotlib. Terapkan kode berikut.
+
+```py
+plt.plot(history.history['root_mean_squared_error'])
+plt.plot(history.history['val_root_mean_squared_error'])
+plt.title('model_metrics')
+plt.ylabel('root_mean_squared_error')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.show()
+```
+
+maka akan tampil gambar berikut:
+
+
+
+
+Pada hasil fit model, RMSE dihitung untuk data pelatihan (train) dan data validasi (validation) setiap epoch. Berikut adalah ringkasan hasil RMSE pada setiap epoch:
+
+Pada Epoch 1, RMSE pada data pelatihan adalah 0.2322 dan pada data validasi adalah 0.2148.
+Pada Epoch 2, RMSE pada data pelatihan turun menjadi 0.2081 dan pada data validasi turun menjadi 0.2118.
+Pada Epoch 3, RMSE pada data pelatihan menjadi 0.2029 dan pada data validasi menjadi 0.2081.
+Pada Epoch 4, RMSE pada data pelatihan menjadi 0.2016 dan pada data validasi menjadi 0.2071.
+Pada Epoch 5, RMSE pada data pelatihan menjadi 0.2010 dan pada data validasi menjadi 0.2055.
+
+
+
+
+
+
+
+
 Pada bagian ini Anda perlu menyebutkan metrik evaluasi yang digunakan. Kemudian, jelaskan hasil proyek berdasarkan metrik evaluasi tersebut.
 
 Ingatlah, metrik evaluasi yang digunakan harus sesuai dengan konteks data, problem statement, dan solusi yang diinginkan.
@@ -723,6 +786,18 @@ Ingatlah, metrik evaluasi yang digunakan harus sesuai dengan konteks data, probl
 - Menjelaskan formula metrik dan bagaimana metrik tersebut bekerja.
 
 ## Conclusion
+
+Pada solusi Content Based Filtering, solusi ini menghasilkan rekomendasi yang sangat sesuai dengan sampel movie yang diberikan berdasarkan fitur genre movie.
+
+Pada solusi Collaborative Filtering, solusi ini menghasilkan rekomendasi yang relevan terhadap rating user dan genre. Rekomendasi movie yang diberikan memiliki genre yang sama paling tidak satu genre yang sama.
+
+Berdasarkan hasil visualisasi metrik, proses training model cukup smooth dan model konvergen pada epochs sekitar 4. Dari proses ini, kita memperoleh nilai error (RSME) akhir sebesar sekitar 0.20 dan error pada data validasi sebesar 0.20. Nilai tersebut cukup bagus untuk sistem rekomendasi. 
+
+Dari hasil RMSE tersebut, dapat dilihat bahwa baik pada data pelatihan maupun data validasi, RMSE mengalami penurunan setiap epoch. Hal ini menunjukkan bahwa model semakin mempelajari pola dalam data dan semakin baik dalam memprediksi nilai target.
+
+Selain itu, RMSE pada data validasi juga memberikan gambaran tentang performa model pada data yang tidak digunakan dalam proses pelatihan. Jika RMSE pada data validasi tetap rendah dan mendekati RMSE pada data pelatihan, maka model memiliki kemampuan umum dalam memprediksi rating tanpa overfitting pada data pelatihan.
+
+Saran untuk kedepannya, dataset movie bisa ditambahkan fitur-fitur lainnya agar bisa diimplementasikan ke real project.
 
 ## References
 [1]   Halim, A., Gohzali, H., Panjaitan, D. M., & Maulana, I. (2017). Sistem Rekomendasi Film menggunakan Bisecting K-Means dan Collaborative Filtering. [Available](https://citisee.amikompurwokerto.ac.id/assets/proceedings/2017/TI08.pdf)
