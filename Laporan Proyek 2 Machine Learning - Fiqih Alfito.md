@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Sistem rekomendasi adalah suatu mekanisme yang dapat memberikan suatu informasi atau rekomendasi sesuai dengan kesukaan user berdasarkan informasi yang diperoleh dari user. Oleh karena itu, diperlukan model rekomendasi yang tepat agar rekomendasi yang diberikan oleh sistem sesuai dengan kesukaan user, serta mempermudah user mengambil keputusan dalam  enentukan item (film) yang akan dipilih.
+Sistem rekomendasi adalah suatu mekanisme yang dapat memberikan suatu informasi atau rekomendasi sesuai dengan kesukaan *user* berdasarkan informasi yang diperoleh dari *user*. Oleh karena itu, diperlukan model rekomendasi yang tepat agar rekomendasi yang diberikan oleh sistem sesuai dengan kesukaan *user*, serta mempermudah *user* mengambil keputusan dalam  enentukan item (film) yang akan dipilih.
 
 Sistem rekomendasi film menjadi penting dalam konteks industri hiburan dan digital, di mana jumlah konten film dan TV yang tersedia sangat luas dan terus bertambah. Dalam lingkungan seperti ini, pengguna seringkali menghadapi kesulitan dalam menavigasi melalui pilihan yang melimpah. Sistem rekomendasi film bertujuan untuk membantu pengguna menemukan konten yang paling relevan dan menarik bagi mereka, sehingga memperbaiki pengalaman konsumen dan meningkatkan retensi pengguna. Dengan memberikan rekomendasi yang akurat, sistem ini juga membantu meningkatkan kepuasan pengguna dan memfasilitasi penemuan konten baru yang mungkin tidak akan ditemukan secara konvensional[1].
 
@@ -13,14 +13,14 @@ Sistem rekomendasi film menjadi penting dalam konteks industri hiburan dan digit
 Berdasarkan kondisi yang telah diuraikan sebelumnya, penulis akan mengembangkan sebuah sistem prediksi diabetes untuk menjawab permasalahan berikut.
 
 Menjelaskan pernyataan masalah:
-- Berdasarkan data mengenai *user*, bagaimana membuat sistem rekomendasi yang dipersonalisasi dengan teknik content-based filtering?
-- Dengan data rating yang dimiliki, bagaimana sistem dapat merekomendasikan movie lain yang mungkin disukai dan belum pernah dikunjungi oleh *user*? 
+- Berdasarkan data mengenai *user*, bagaimana membuat sistem rekomendasi yang dipersonalisasi dengan teknik *content-based filtering*?
+- Dengan data rating yang dimiliki, bagaimana sistem dapat merekomendasikan *movie* lain yang mungkin disukai dan belum pernah ditonton oleh *user*? 
 
 ### Goals
 
 Menjelaskan tujuan proyek yang menjawab pernyataan masalah:
-- Menghasilkan sejumlah rekomendasi restoran yang dipersonalisasi untuk pengguna dengan teknik content-based filtering.
-- Menghasilkan sejumlah rekomendasi movie yang sesuai dengan preferensi pengguna dan belum pernah ditonton sebelumnya dengan teknik collaborative filtering.
+- Menghasilkan sejumlah rekomendasi restoran yang dipersonalisasi untuk pengguna dengan teknik *content-based filtering*.
+- Menghasilkan sejumlah rekomendasi *movie* yang sesuai dengan preferensi pengguna dan belum pernah ditonton sebelumnya dengan teknik *collaborative filtering*.
 
 
 
@@ -42,19 +42,19 @@ Untuk mencapai goals yang diinginkan, penulis akan membuat sistem rekomendasi de
 
 4. Data Preparation
 
-    Pada tahap ini, penulis mempersiapkan data dan melakukan beberapa teknik seperti mengatasi missing value, drop fitur yang tidak digunakan, dan hapus movie yang tidak memiliki genre. Selanjutnya data telah siap untuk digunakan dalam pengembangan model. 
+    Pada tahap ini, penulis mempersiapkan data dan melakukan beberapa teknik seperti mengatasi missing value, drop fitur yang tidak digunakan, dan hapus *movie* yang tidak memiliki genre. Selanjutnya data telah siap untuk digunakan dalam pengembangan model. 
 
 5. Model Development dengan Content Based Filtering
 
-    Pada tahap inilah penulis mengembangkan sistem rekomendasi dengan teknik content based filtering. Teknik content based filtering akan merekomendasikan movie yang mirip dengan movie yang dinilai/rating *user* di masa lalu. Pada tahap ini, Penulis akan menemukan representasi fitur penting dari setiap genre movie dengan tfidf vectorizer dan menghitung tingkat kesamaan dengan cosine similarity. Setelah itu, penulis akan membuat sejumlah rekomendasi movie untuk user berdasarkan kesamaan yang telah dihitung sebelumnya.
+    Pada tahap inilah penulis mengembangkan sistem rekomendasi dengan teknik *content based filtering*. Teknik *content based filtering* akan merekomendasikan *movie* yang mirip dengan *movie* yang dinilai/rating *user* di masa lalu. Pada tahap ini, Penulis akan menemukan representasi fitur penting dari setiap genre *movie* dengan tfidf vectorizer dan menghitung tingkat kesamaan dengan cosine similarity. Setelah itu, penulis akan membuat sejumlah rekomendasi *movie* untuk *user* berdasarkan kesamaan yang telah dihitung sebelumnya.
 
 6. Model Development dengan Collaborative Filtering
 
-    Pada tahap ini, sistem merekomendasikan sejumlah movie berdasarkan rating yang telah diberikan sebelumnya. Dari data rating *user*, penulis akan mengidentifikasi movie-movie yang mirip dan belum pernah ditonton oleh *user* untuk direkomendasikan.
+    Pada tahap ini, sistem merekomendasikan sejumlah *movie* berdasarkan rating yang telah diberikan sebelumnya. Dari data rating *user*, penulis akan mengidentifikasi *movie*-*movie* yang mirip dan belum pernah ditonton oleh *user* untuk direkomendasikan.
 
 ## Data Understanding
 
-Data yang digunakan pada proyek ini adalah [Dataset Movie Recommendation](https://www.kaggle.com/datasets/uttam94/recommendation). Dataset ini memiliki dua file csv yang terdiri dari movies.csv dan ratings.csv. movies.csv berisi data-data *movie* yang mempunyai fitur ``movieId, title, genres`` dan mempunyai 9742 baris. ratings.csv berisi data-data user yang telah melakukan *rating* pada *movie* yang telah ditontonnya, file ini terdiri dari fitur ``userId, movieId, rating, timestamp`` dan mempunyai 100836 baris. Kumpulan data ini dapat digunakan untuk membangun model *machine learning* untuk memberikan rekomendasi film pada *user* berdasarkan data-data pada film dan perilaku *user* lainnya. 
+Data yang digunakan pada proyek ini adalah [Dataset Movie Recommendation](https://www.kaggle.com/datasets/uttam94/recommendation). Dataset ini memiliki dua file csv yang terdiri dari movies.csv dan ratings.csv. movies.csv berisi data-data *movie* yang mempunyai fitur ``movieId, title, genres`` dan mempunyai 9742 baris. ratings.csv berisi data-data *user* yang telah melakukan *rating* pada *movie* yang telah ditontonnya, file ini terdiri dari fitur ``userId, movieId, rating, timestamp`` dan mempunyai 100836 baris. Kumpulan data ini dapat digunakan untuk membangun model *machine learning* untuk memberikan rekomendasi film pada *user* berdasarkan data-data pada film dan perilaku *user* lainnya. 
 
 Variabel-variabel pada *Dataset movie recommendation* adalah sebagai berikut:
 
@@ -67,7 +67,7 @@ Variabel-variabel pada *Dataset movie recommendation* adalah sebagai berikut:
 2. Data Ratings
 
     - userId : merupakan id dari *user*. id ini bisa digunakan untuk mengetahui jumlah *user* yang telah melakukan *rating*.
-    - movieId : merupakan id movie yang telah ditonton oleh *user*.
+    - movieId : merupakan id *movie* yang telah ditonton oleh *user*.
     - rating : merupakan angka penilaian dari sebuah film yang telah ditonton oleh *user*.
     - timestamp : merupakan waktu ketika *user* telah melakukan *rating*.
 
@@ -93,7 +93,7 @@ Terdapat beberapa tahapan dalam memahami dataset tersebut, yaitu:
 
     Dari info diatas, maka tampil tabel berisi *movie* yang telah dikelompokkan beserta jumlah *rating*.
 
-    Tabel 1. total rating setiap movie.
+    Tabel 1. total rating setiap *movie*.
 
     | movieId | userId | rating |    timestamp    |
     |---------|--------|--------|-----------------|
@@ -155,7 +155,7 @@ Berikut persiapan data yang dilakukan yaitu:
 
 3. Encode fitur pada rating
 
-    Pada tahap ini, kita perlu melakukan persiapan data untuk menyandikan (encode) fitur `userId` dan `movieId` ke dalam indeks integer.
+    Pada tahap ini, penulis perlu melakukan persiapan data untuk menyandikan (encode) fitur `userId` dan `movieId` ke dalam indeks integer.
 
     Kemudian petakan `userId` dan `movieId` ke dataframe `ratings`.
 
@@ -170,7 +170,7 @@ Berikut persiapan data yang dilakukan yaitu:
     |   1    |   50    |  5.0   |   0  |   4   |
     |   ...  | 
 
-    Terakhir, cek beberapa hal dalam data seperti jumlah user dan jumlah movie.
+    Terakhir, cek beberapa hal dalam data seperti jumlah *user* dan jumlah movie.
 
     ```
     610
@@ -182,19 +182,19 @@ Berikut persiapan data yang dilakukan yaitu:
     ```
 
 
-4. Pisahkan movie yang tidak ada genre.
+4. Pisahkan *movie* yang tidak ada genre.
 
-    Karena genre digunakan sebagai fitur rekomendasi, hilangkan movie yang tidak memiliki genre. Periksa nama-nama genre yang tersedia.
+    Karena genre digunakan sebagai fitur rekomendasi, hilangkan *movie* yang tidak memiliki genre. Periksa nama-nama genre yang tersedia.
 
     ```py
     ['Crime', 'Comedy', 'Western', 'Animation', 'Musical', 'Thriller', 'Mystery', 'Romance', 'War', 'Action', 'Fantasy', 'Horror', '(no genres listed)', 'Children', 'Drama', 'IMAX', 'Adventure', 'Sci-Fi', 'Documentary', 'Film-Noir']
     ```
 
-    Dari data diatas, terdapat nama genre `'(no genres listed)'`, maka data ini harus dihilangkan, agar data ini tidak dianggap sebagai nama genre. movie yang tidak memiliki genre dapat mengakibatkan bias pada model.
+    Dari data diatas, terdapat nama genre `'(no genres listed)'`, maka data ini harus dihilangkan, agar data ini tidak dianggap sebagai nama genre. *movie* yang tidak memiliki genre dapat mengakibatkan bias pada model.
 
-    Berikut nama-nama movie yang memiliki data genre `'(no genres listed)'`.
+    Berikut nama-nama *movie* yang memiliki data genre `'(no genres listed)'`.
 
-    Tabel 3. tabel movie yang berisi tidak ada genre.
+    Tabel 3. tabel *movie* yang berisi tidak ada genre.
     
     | movieId | title                        | genres              |
     |---------|------------------------------|---------------------|
@@ -217,15 +217,15 @@ Berikut persiapan data yang dilakukan yaitu:
 
 ## Modeling
 
-Pada tahap *modeling*, digunakan dua solusi rekomendasi dengan algoritma berbeda yaitu Content Based Filtering dan Collaborative Filtering.
+Pada tahap *modeling*, digunakan dua solusi rekomendasi dengan algoritma berbeda yaitu *Content Based Filtering* dan *Collaborative Filtering*.
 
 ### **Content Based Filtering**
 
-Content-Based Filtering adalah metode dalam sistem rekomendasi yang menggunakan karakteristik atau konten suatu item untuk merekomendasikan item lain kepada pengguna. Metode ini mengandalkan informasi yang terkandung dalam item-item yang sudah diketahui kesukaan atau preferensi pengguna untuk melakukan rekomendasi. 
+*Content-Based Filtering* adalah metode dalam sistem rekomendasi yang menggunakan karakteristik atau konten suatu item untuk merekomendasikan item lain kepada pengguna. Metode ini mengandalkan informasi yang terkandung dalam item-item yang sudah diketahui kesukaan atau preferensi pengguna untuk melakukan rekomendasi. 
 
-Prinsip utama dari Content-Based Filtering adalah mencocokkan preferensi pengguna dengan fitur atau konten dari item-item yang ada. Fitur-fitur ini dapat berupa atribut-atribut seperti judul, genre, aktor, sutradara, atau kata kunci yang terkait dengan item tersebut. Dengan menganalisis kesesuaian fitur-fitur ini, sistem rekomendasi dapat mengidentifikasi item yang paling cocok untuk direkomendasikan kepada pengguna.
+Prinsip utama dari *Content-Based Filtering* adalah mencocokkan preferensi pengguna dengan fitur atau konten dari item-item yang ada. Fitur-fitur ini dapat berupa atribut-atribut seperti judul, genre, aktor, sutradara, atau kata kunci yang terkait dengan item tersebut. Dengan menganalisis kesesuaian fitur-fitur ini, sistem rekomendasi dapat mengidentifikasi item yang paling cocok untuk direkomendasikan kepada pengguna.
 
-Kelebihan Content-Based Filtering:
+Kelebihan *Content-Based Filtering*:
 1. Personalisasi: Metode ini dapat memberikan rekomendasi yang personal dan sesuai dengan preferensi pengguna. Dengan menganalisis karakteristik item yang disukai oleh pengguna, rekomendasi yang dihasilkan cenderung sesuai dengan preferensi individu.
 2. Tidak membutuhkan data pengguna: CBF tidak memerlukan informasi pengguna selain preferensi awal yang sudah diketahui. Ini berguna jika sistem tidak memiliki akses ke data pengguna yang lengkap atau jika pengguna ingin menjaga privasi mereka.
 3. Kemampuan menghadapi cold-start problem: CBF dapat bekerja dengan baik saat menghadapi cold-start problem, yaitu ketika sistem harus merekomendasikan item kepada pengguna baru atau item baru yang belum banyak diketahui.
@@ -235,20 +235,13 @@ Kekurangan Content-Based Filtering:
 2. Tidak memperhitungkan preferensi sosial: CBF hanya mempertimbangkan preferensi individu pengguna dan tidak memperhitungkan preferensi sosial atau rekomendasi dari pengguna lain. Hal ini dapat mengabaikan kemungkinan pengaruh sosial dalam preferensi pengguna.
 3. Ketergantungan pada kualitas konten: Efektivitas CBF sangat tergantung pada kualitas dan keakuratan informasi konten yang dianalisis. Jika atribut-atribut yang digunakan tidak cukup representatif atau tidak mencerminkan preferensi pengguna secara akurat, rekomendasi yang dihasilkan mungkin tidak relevan atau tepat.
 
-Pada proyek ini, Content Based Filtering diawali dengan TF-IDF Vectorizer.
+Pada proyek ini, *Content Based Filtering* diawali dengan TF-IDF Vectorizer.
 
 1. **TF-IDF Vectorizer**
 
     TF-IDF Vectorizer adalah algoritma yang mengubah teks menjadi representasi vektor numerik. Ini menggunakan konsep term frequency (frekuensi kata) dan inverse document frequency (kebalikan frekuensi dokumen). Term frequency mengukur seberapa sering kata muncul dalam suatu dokumen, sementara inverse document frequency mengukur pentingnya kata dalam seluruh dokumen. Dengan menggabungkan kedua nilai ini, TF-IDF Vectorizer menghasilkan vektor numerik yang merepresentasikan teks. Ini digunakan dalam berbagai tugas pemrosesan bahasa alami seperti klasifikasi teks dan pengambilan informasi. Dalam proyek ini, algoritma ini digunakan untuk mengambil fitur penting pada fitur ``genres``.
 
-    pertama, inisialisasi dahulu algoritmanya.
-
-    ```py
-    # Inisialisasi TfidfVectorizer
-    tf = TfidfVectorizer(token_pattern=r"(?u)\b\w[\w-]*\w\b")
-    ```
-
-    Dalam proyek ini, TfidfVectorizer diisi dengan parameter ``token_pattern=r"(?u)\b\w[\w-]*\w\b"``. parameter tersebut bertujuan untuk mengambil data penting dengan syarat kata yang berisi *hyphenated word* tidak dipisah. Di fitur genre terdapat genre ``Sci-fi`` dan ``Film-Noir``, maka kata *hyphenated word* tersebut tidak akan dipisah menjadi ``Sci`` dan ``Fi``. Kata-kata tersebut akan dianggap sebagai satu genre yang utuh. Berikut fitur penting yang dihasilkan:
+    pertama, inisialisasi dahulu algoritmanya. Dalam proyek ini, TfidfVectorizer diisi dengan parameter ``token_pattern=r"(?u)\b\w[\w-]*\w\b"``. parameter tersebut bertujuan untuk mengambil data penting dengan syarat kata yang berisi *hyphenated word* tidak dipisah. Di fitur genre terdapat genre ``Sci-fi`` dan ``Film-Noir``, maka kata *hyphenated word* tersebut tidak akan dipisah menjadi ``Sci`` dan ``Fi``. Kata-kata tersebut akan dianggap sebagai satu genre yang utuh. Berikut fitur penting yang dihasilkan:
 
     ```
     array(['action', 'adventure', 'animation', 'children', 'comedy', 'crime', 'documentary', 'drama', 'fantasy', 'film-noir', 'horror', 'imax', 'musical', 'mystery', 'romance', 'sci-fi', 'thriller', 'war', 'western'], dtype=object)
@@ -256,14 +249,10 @@ Pada proyek ini, Content Based Filtering diawali dengan TF-IDF Vectorizer.
 
     Kemudian melakukan fit lalu transformasikan ke bentuk matrix.
 
-    ```py
-    tfidf_matrix = tf.fit_transform(fix_movies['genres'])
-    ```
-
     Untuk melihat tf-idf matrix, buatlah *DataFrame* dengan fitur penting yang dihasilkan sebelumnya sebagai kolom dan ``title`` *movie* sebagai baris.
     
 
-    Tabel 4. Tabel matrix tf-idf untuk beberapa movie dan genre
+    Tabel 4. Tabel matrix tf-idf untuk beberapa *movie* dan genre
 
     | title                                      | thriller | children | musical | animation | fantasy | action   | war     | horror | film-noir | imax     |
     |--------------------------------------------|----------|----------|---------|-----------|---------|----------|---------|--------|-----------|----------|
@@ -287,17 +276,11 @@ Pada proyek ini, Content Based Filtering diawali dengan TF-IDF Vectorizer.
 
     Cosine similarity menggunakan konsep dari ruang vektor untuk mengukur sudut antara dua vektor. Semakin dekat sudut antara dua vektor dengan 0 derajat (kemungkinan terbesar), semakin mirip atau serupa vektor-vektor tersebut. Metode ini mengabaikan magnitudo vektor dan hanya memperhatikan arahnya.
 
-    Dalam sistem rekomendasi, cosine similarity dapat digunakan untuk menghitung kesamaan antara dua item atau entitas berdasarkan atribut-atribut yang relevan. Dengan menghitung cosine similarity antara vektor representasi item yang ada dalam dataset dengan vektor representasi item yang sedang direkomendasikan, kita dapat mengidentifikasi item yang paling mirip atau serupa dengan item yang sedang dicari. Item dengan nilai cosine similarity yang lebih tinggi kemungkinan besar akan menjadi rekomendasi yang lebih relevan bagi pengguna.
+    Dalam sistem rekomendasi, cosine similarity dapat digunakan untuk menghitung kesamaan antara dua item atau entitas berdasarkan atribut-atribut yang relevan. Dengan menghitung cosine similarity antara vektor representasi item yang ada dalam dataset dengan vektor representasi item yang sedang direkomendasikan, penulis dapat mengidentifikasi item yang paling mirip atau serupa dengan item yang sedang dicari. Item dengan nilai cosine similarity yang lebih tinggi kemungkinan besar akan menjadi rekomendasi yang lebih relevan bagi pengguna.
 
     Hasil dari cosine similarity akan berada dalam rentang -1 hingga 1. Nilai 1 menunjukkan kesamaan sempurna antara dua vektor, sedangkan nilai -1 menunjukkan perbedaan sempurna. Nilai 0 menunjukkan bahwa dua vektor saling tegak lurus atau tidak ada kesamaan sama sekali.
 
     Dalam proyek ini, masukkan *td-idf matrix* yang didapat pada tahap TF-IDF Vectorizer sebelumnya sebagai parameter dari fungsi ``cosine_similarity()``.
-
-    ```py
-    # Menghitung cosine similarity pada matrix tf-idf
-    cosine_sim = cosine_similarity(tfidf_matrix)
-    cosine_sim
-    ```
 
     Untuk melihat hasil perhitungan *cosine similarity*, buat DataFrame dengan variabel `cosine_sim` sebagai data, `title` sebagai kolom dan baris. Maka akan terlihat derajat kesamaan antar *movie*.
 
@@ -321,30 +304,26 @@ Pada proyek ini, Content Based Filtering diawali dengan TF-IDF Vectorizer.
 
     Untuk buat rekomendasi, buatlah fungsi untuk memberikan rekomendasi dengan parameter sebagai berikut:
 
-    - title : judul movie (index kemiripan dataframe)
-    - similarity_data : DataFrame mengenai similarity yang telah kita definisikan sebelumnya.
-    - items : data movie yang akan digunakan untuk mendefinisikan kemiripan.
+    - title : judul *movie* (index kemiripan dataframe)
+    - similarity_data : DataFrame mengenai similarity yang telah penulis definisikan sebelumnya.
+    - items : data *movie* yang akan digunakan untuk mendefinisikan kemiripan.
     - k : banyak rekomendasi yang ingin diberikan.
 
-    sebelum mulai menulis kodenya, ingatlah kembali definisi sistem rekomendasi yang menyatakan bahwa keluaran sistem ini adalah berupa top-N recommendation. Oleh karena itu, kita akan memberikan sejumlah rekomendasi movie pada pengguna yang diatur dalam parameter k.
+    sebelum mulai menulis kodenya, ingatlah kembali definisi sistem rekomendasi yang menyatakan bahwa keluaran sistem ini adalah berupa top-N recommendation. Oleh karena itu, penulis akan memberikan sejumlah rekomendasi *movie* pada pengguna yang diatur dalam parameter k.
 
     
-    Kemudian ambil satu sampel movie untuk diberikan rekomendasi pada movie tersebut.
+    Kemudian ambil satu sampel *movie* untuk diberikan rekomendasi pada *movie* tersebut.
 
 
-    Tabel 6. sampel movie sebagai rujukan untuk rekomendasi.
+    Tabel 6. sampel *movie* sebagai rujukan untuk rekomendasi.
 
     | movieId | title                             | genres                      |
     |---------|-----------------------------------|-----------------------------|
     | 33437   | Unleashed (Danny the Dog) (2005)  | Action/Crime/Drama/Thriller |
 
-    Selanjutnya jalankan fungsi `movie_recommendation()` dengan parameter judul movie seperti sampel sebelumnya.
-
-    ```py
-    movie_recommendations('Unleashed (Danny the Dog) (2005)')
-    ```
+    Selanjutnya jalankan fungsi `movie_recommendation()` dengan parameter judul *movie* seperti sampel sebelumnya.
     
-    maka akan tampil tabel berisi 5 rekomendasi teratas dari judul movie yang kita berikan. 5 rekomendasi judul movie adalah nilai *default* parameter `k`, nilai `k` dapat diubah.
+    maka akan tampil tabel berisi 5 rekomendasi teratas dari judul *movie* yang sistem berikan. 5 rekomendasi judul *movie* adalah nilai *default* parameter `k`, nilai `k` dapat diubah.
 
     Tabel 7. Hasil rekomendasi Content-Based Filtering.
     
@@ -356,12 +335,12 @@ Pada proyek ini, Content Based Filtering diawali dengan TF-IDF Vectorizer.
     | Pusher II: With Blood on My Hands (2004) | 34811   | Action/Crime/Drama/Thriller       |
     | Bullitt (1968)                     | 7076    | Action/Crime/Drama/Thriller       |
   
-    Dari tabel di atas bahwa movie "Unleashed (Danny the Dog) (2005)" dengan kategori Action|Crime|Drama|Thriller menghasilkan rekomendasi movie dengan kategori yang sama.
+    Dari tabel di atas bahwa *movie* "Unleashed (Danny the Dog) (2005)" dengan kategori Action|Crime|Drama|Thriller menghasilkan rekomendasi *movie* dengan kategori yang sama.
 
 
 ### **Collaborative Filtering**
 
-Collaborative Filtering (CF) adalah salah satu metode yang digunakan dalam sistem rekomendasi untuk memberikan rekomendasi kepada pengguna berdasarkan preferensi atau perilaku pengguna lainnya. Pendekatan ini didasarkan pada asumsi bahwa pengguna yang memiliki preferensi yang sama di masa lalu cenderung memiliki preferensi yang sama di masa depan.
+*Collaborative Filtering* adalah salah satu metode yang digunakan dalam sistem rekomendasi untuk memberikan rekomendasi kepada pengguna berdasarkan preferensi atau perilaku pengguna lainnya. Pendekatan ini didasarkan pada asumsi bahwa pengguna yang memiliki preferensi yang sama di masa lalu cenderung memiliki preferensi yang sama di masa depan.
 
 Ada dua jenis utama dari Collaborative Filtering:
 
@@ -389,15 +368,15 @@ Berikut adalah tahapan dari Collaborative Filtering:
 
     Data yang akan dibagi merupakan data yang sudah diproses di tahap Data Preperation. Sebelum membagi data training dan validasi, acak datanya terlebih dahulu agar distribusinya random.
 
-    Karena data berjumlah banyak, maka kita bagi data dengan rasio 90:10. Namun sebelumnya, kita perlu memetakan data `user` dan `movie` menjadi satu value terlebih dahulu. Lalu, buatlah rating dalam skala 0 sampai 1 agar mudah dalam melakukan proses training.
+    Karena data berjumlah banyak, maka penulis bagi data dengan rasio 90:10. Namun sebelumnya, penulis perlu memetakan data `user` dan `movie` menjadi satu value terlebih dahulu. Lalu, buatlah rating dalam skala 0 sampai 1 agar mudah dalam melakukan proses training.
 
     Selanjutnya data telah siap untuk dimasukkan ke model.
 
 2. Proses Training
 
-    Pada tahap ini, model menghitung skor kecocokan antara pengguna dan movie dengan teknik embedding. Pertama, kita melakukan proses embedding terhadap data user dan movie. Selanjutnya, lakukan operasi perkalian dot product antara embedding user dan movie. Selain itu, kita juga dapat menambahkan bias untuk setiap user dan movie. Skor kecocokan ditetapkan dalam skala [0,1] dengan fungsi aktivasi sigmoid.
+    Pada tahap ini, model menghitung skor kecocokan antara pengguna dan *movie* dengan teknik *embedding*. Pertama, penulis melakukan proses *embedding* terhadap data *user* dan *movie*. Selanjutnya, lakukan operasi perkalian dot product antara *embedding* *user* dan *movie*. Selain itu, penulis juga dapat menambahkan bias untuk setiap *user* dan *movie*. Skor kecocokan ditetapkan dalam skala [0,1] dengan fungsi aktivasi sigmoid.
 
-    Di sini, kita membuat class RecommenderNet dengan keras Model class. Kode class RecommenderNet ini terinspirasi dari tutorial dalam situs Keras dengan beberapa adaptasi.
+    Di sini, penulis membuat class RecommenderNet dengan keras Model class. Kode class RecommenderNet ini terinspirasi dari tutorial dalam situs Keras dengan beberapa adaptasi.
 
     
     Selanjutnya, lakukan proses compile terhadap model.
@@ -410,9 +389,9 @@ Berikut adalah tahapan dari Collaborative Filtering:
 
 3. Mendapatkan Rekomendasi Movie
 
-    Untuk mendapatkan rekomendasi movie, pertama kita ambil sampel user secara acak dan definisikan variabel movie_not_watched yang merupakan daftar movie yang belum pernah dikunjungi oleh pengguna. Anda mungkin bertanya-tanya, mengapa kita perlu menentukan daftar movie_not_watched? Hal ini karena daftar movie_not_watched inilah yang akan menjadi movie yang kita rekomendasikan. 
+    Untuk mendapatkan rekomendasi movie, pertama penulis ambil sampel *user* secara acak dan definisikan variabel movie_not_watched yang merupakan daftar movie yang belum pernah ditonton oleh pengguna. daftar movie_not_watched ini yang akan menjadi movie yang penulis rekomendasikan. 
 
-    Sebelumnya, pengguna telah memberi rating pada beberapa movie yang telah mereka kunjungi. Kita menggunakan rating ini untuk membuat rekomendasi movie yang mungkin cocok untuk pengguna. Nah, movie yang akan direkomendasikan tentulah movie yang belum pernah dikunjungi oleh pengguna. Oleh karena itu, kita perlu membuat variabel movie_not_watched sebagai daftar movie untuk direkomendasikan pada pengguna.
+    Sebelumnya, pengguna telah memberi rating pada beberapa movie yang telah mereka tonton. penulis menggunakan rating ini untuk membuat rekomendasi movie yang mungkin cocok untuk pengguna. Nah, movie yang akan direkomendasikan tentulah movie yang belum pernah ditonton oleh pengguna. Oleh karena itu, penulis perlu membuat variabel movie_not_watched sebagai daftar movie untuk direkomendasikan pada pengguna.
 
     Variabel movie_not_watched diperoleh dengan menggunakan operator bitwise (~) pada variabel movie_watched_by_user.
 
@@ -476,9 +455,9 @@ Berikut adalah tahapan dari Collaborative Filtering:
     Genres: Drama
    ```
 
-    Hasil di atas adalah rekomendasi untuk user dengan id 425. Dari output tersebut, dapat dibandingkan antara Movie with high ratings from user dan Top 10 movie recommendation untuk user. 
+    Hasil di atas adalah rekomendasi untuk *user* dengan id 425. Dari output tersebut, dapat dibandingkan antara Movie with high ratings from *user* dan Top 10 movie recommendation untuk *user*. 
 
-    Beberapa movie rekomendasi menyediakan genre yang sesuai dengan rating user. Sistem merekomendasikan movie dengan genre dominan Drama, sesuai dengan rating user yang lebih dominan movie bergenre Drama. Begitu pula dengan genre lainnya. Prediksi yang cukup sesuai.
+    Beberapa movie rekomendasi menyediakan genre yang sesuai dengan rating *user*. Sistem merekomendasikan movie dengan genre dominan Drama, sesuai dengan rating *user* yang lebih dominan movie bergenre Drama. Begitu pula dengan genre lainnya. Prediksi yang cukup sesuai.
 
 ## Evaluation
 
@@ -486,7 +465,7 @@ Dalam proyek ini, kedua solusi rekomendasi mempunyai masing-masing cara evaluasi
 
 ### **Evaluasi Content Based Filtering**
 
-Untuk mengevaluasi hasil rekomendasi Content Based Filtering, penulis menggunakan Precision. Metrik ini mengukur sejauh mana rekomendasi yang diberikan relevan dengan preferensi pengguna. Presisi dihitung dengan membagi jumlah rekomendasi yang relevan dengan jumlah total rekomendasi yang diberikan.
+Untuk mengevaluasi hasil rekomendasi *Content Based Filtering*, penulis menggunakan *Precision*. Metrik ini mengukur sejauh mana rekomendasi yang diberikan relevan dengan preferensi pengguna. Presisi dihitung dengan membagi jumlah rekomendasi yang relevan dengan jumlah total rekomendasi yang diberikan.
 
 ```
 Presisi = ((Jumlah Rekomendasi yang Relevan) / (Jumlah Total Rekomendasi)) * 100%
@@ -529,7 +508,7 @@ Presisi = (5 / 5) * 100%
 Presisi = 100%
 ```
 
-Maka dapat diketahui bahwa nilai evaluasi Content Based Filtering menggunakan metrik Precision adalah 100%.
+Maka dapat diketahui bahwa nilai evaluasi Content Based Filtering menggunakan metrik *Precision* adalah 100%.
 
 ### **Evaluasi Collaborative Filtering**
 
@@ -564,19 +543,7 @@ Untuk mengevaluasi model yang telah dilatih, proyek ini menggunakan metrik `root
 
 - **Visualisasi Metrik**
 
-    Untuk melihat visualisasi proses training, mari kita plot metrik evaluasi dengan matplotlib. Terapkan kode berikut.
-
-    ```py
-    plt.plot(history.history['root_mean_squared_error'])
-    plt.plot(history.history['val_root_mean_squared_error'])
-    plt.title('model_metrics')
-    plt.ylabel('root_mean_squared_error')
-    plt.xlabel('epoch')
-    plt.legend(['train', 'test'], loc='upper left')
-    plt.show()
-    ```
-
-    maka akan tampil gambar berikut:
+    Untuk melihat visualisasi proses training, penulis membuat plot metrik evaluasi dengan matplotlib.
 
     ![visual metrik](https://github.com/fiqihalfito/ML-movie-recommendation/assets/112739333/5a471719-b832-4675-bcfc-7d34a2acb148)
 
@@ -598,13 +565,13 @@ Untuk mengevaluasi model yang telah dilatih, proyek ini menggunakan metrik `root
 
 ## Conclusion
 
-Pada solusi Content Based Filtering, solusi ini menghasilkan rekomendasi yang sangat sesuai dengan sampel movie yang diberikan berdasarkan fitur genre movie.
+Pada solusi *Content Based Filtering*, solusi ini menghasilkan rekomendasi yang sangat sesuai dengan sampel movie yang diberikan berdasarkan fitur genre movie.
 
-Metrik yang digunakan untuk mengukur evaluasi Content Based Filtering adalah Precision. nilai precision didapat dari jumlah item yang relevan dibagi dengan jumlah item yang direkomendasikan. Nilai precision dari solusi rekomendasi ini sebesar 100%. Dalam hal ini, sistem rekomendasi memiliki presisi yang tinggi, menunjukkan bahwa sistem tersebut dapat menghasilkan rekomendasi yang sesuai dengan preferensi genre pengguna. 
+Metrik yang digunakan untuk mengukur evaluasi *Content Based Filtering* adalah *Precision*. nilai *precision* didapat dari jumlah item yang relevan dibagi dengan jumlah item yang direkomendasikan. Nilai *precision* dari solusi rekomendasi ini sebesar 100%. Dalam hal ini, sistem rekomendasi memiliki presisi yang tinggi, menunjukkan bahwa sistem tersebut dapat menghasilkan rekomendasi yang sesuai dengan preferensi genre pengguna. 
 
-Pada solusi Collaborative Filtering, solusi ini menghasilkan rekomendasi yang relevan terhadap rating user dan genre. Rekomendasi movie yang diberikan memiliki genre yang sama paling tidak satu genre yang sama.
+Pada solusi *Collaborative Filtering*, solusi ini menghasilkan rekomendasi yang relevan terhadap *rating user* dan genre. Rekomendasi movie yang diberikan memiliki genre yang sama paling tidak satu genre yang sama.
 
-Berdasarkan hasil visualisasi metrik, proses training model cukup smooth dan model konvergen pada epochs sekitar 4. Dari proses ini, kita memperoleh nilai error (RSME) akhir sebesar sekitar 0.20 dan error pada data validasi sebesar 0.20. Nilai tersebut cukup bagus untuk sistem rekomendasi. 
+Berdasarkan hasil visualisasi metrik, proses training model cukup smooth dan model konvergen pada epochs sekitar 4. Dari proses ini, penulis memperoleh nilai error (RSME) akhir sebesar sekitar 0.20 dan error pada data validasi sebesar 0.20. Nilai tersebut cukup bagus untuk sistem rekomendasi. 
 
 Dalam konteks RMSE, epoch terakhir mengacu pada hasil pelatihan model pada epoch ke-5. Pada epoch terakhir ini, RMSE dihitung untuk data pelatihan dan data validasi.
 
