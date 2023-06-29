@@ -652,6 +652,8 @@ Untuk mengevaluasi model yang telah dilatih, proyek ini menggunakan metrik `root
 
 Pada solusi Content Based Filtering, solusi ini menghasilkan rekomendasi yang sangat sesuai dengan sampel movie yang diberikan berdasarkan fitur genre movie.
 
+Metrik yang digunakan untuk mengukur evaluasi Content Based Filtering adalah Precision. nilai precision didapat dari jumlah item yang relevan dibagi dengan jumlah item yang direkomendasikan. Nilai precision dari solusi rekomendasi ini sebesar 100%. Dalam hal ini, sistem rekomendasi memiliki presisi yang tinggi, menunjukkan bahwa sistem tersebut dapat menghasilkan rekomendasi yang sesuai dengan preferensi genre pengguna. 
+
 Pada solusi Collaborative Filtering, solusi ini menghasilkan rekomendasi yang relevan terhadap rating user dan genre. Rekomendasi movie yang diberikan memiliki genre yang sama paling tidak satu genre yang sama.
 
 Berdasarkan hasil visualisasi metrik, proses training model cukup smooth dan model konvergen pada epochs sekitar 4. Dari proses ini, kita memperoleh nilai error (RSME) akhir sebesar sekitar 0.20 dan error pada data validasi sebesar 0.20. Nilai tersebut cukup bagus untuk sistem rekomendasi. 
