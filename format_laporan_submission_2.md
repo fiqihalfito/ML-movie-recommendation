@@ -763,13 +763,17 @@ maka akan tampil gambar berikut:
 
 
 
-Pada hasil fit model, RMSE dihitung untuk data pelatihan (train) dan data validasi (validation) setiap epoch. Berikut adalah ringkasan hasil RMSE pada setiap epoch:
+Pada hasil fit model yang Anda berikan, RMSE dihitung untuk data pelatihan (train) dan data validasi (validation) setiap epoch. Berikut adalah ringkasan hasil RMSE pada setiap epoch:
 
-Pada Epoch 1, RMSE pada data pelatihan adalah 0.2322 dan pada data validasi adalah 0.2148.
-Pada Epoch 2, RMSE pada data pelatihan turun menjadi 0.2081 dan pada data validasi turun menjadi 0.2118.
-Pada Epoch 3, RMSE pada data pelatihan menjadi 0.2029 dan pada data validasi menjadi 0.2081.
-Pada Epoch 4, RMSE pada data pelatihan menjadi 0.2016 dan pada data validasi menjadi 0.2071.
-Pada Epoch 5, RMSE pada data pelatihan menjadi 0.2010 dan pada data validasi menjadi 0.2055.
+- Pada Epoch 1, RMSE pada data pelatihan adalah 0.2322 dan pada data validasi adalah 0.2148.
+- Pada Epoch 2, RMSE pada data pelatihan turun menjadi 0.2081 dan pada data validasi turun menjadi 0.2118.
+- Pada Epoch 3, RMSE pada data pelatihan menjadi 0.2029 dan pada data validasi menjadi 0.2081.
+- Pada Epoch 4, RMSE pada data pelatihan menjadi 0.2016 dan pada data validasi menjadi 0.2071.
+- Pada Epoch 5, RMSE pada data pelatihan menjadi 0.2010 dan pada data validasi menjadi 0.2055.
+
+Dari hasil RMSE tersebut, dapat dilihat bahwa baik pada data pelatihan maupun data validasi, RMSE mengalami penurunan setiap epoch. Hal ini menunjukkan bahwa model semakin mempelajari pola dalam data dan semakin baik dalam memprediksi nilai target.
+
+Selain itu, RMSE pada data validasi juga memberikan gambaran tentang performa model pada data yang tidak digunakan dalam proses pelatihan. Jika RMSE pada data validasi tetap rendah dan mendekati RMSE pada data pelatihan, maka model memiliki kemampuan umum dalam memprediksi rating tanpa overfitting pada data pelatihan.
 
 
 
@@ -793,9 +797,15 @@ Pada solusi Collaborative Filtering, solusi ini menghasilkan rekomendasi yang re
 
 Berdasarkan hasil visualisasi metrik, proses training model cukup smooth dan model konvergen pada epochs sekitar 4. Dari proses ini, kita memperoleh nilai error (RSME) akhir sebesar sekitar 0.20 dan error pada data validasi sebesar 0.20. Nilai tersebut cukup bagus untuk sistem rekomendasi. 
 
-Dari hasil RMSE tersebut, dapat dilihat bahwa baik pada data pelatihan maupun data validasi, RMSE mengalami penurunan setiap epoch. Hal ini menunjukkan bahwa model semakin mempelajari pola dalam data dan semakin baik dalam memprediksi nilai target.
+Dalam konteks RMSE, epoch terakhir mengacu pada hasil pelatihan model pada epoch ke-5. Pada epoch terakhir ini, RMSE dihitung untuk data pelatihan dan data validasi.
 
-Selain itu, RMSE pada data validasi juga memberikan gambaran tentang performa model pada data yang tidak digunakan dalam proses pelatihan. Jika RMSE pada data validasi tetap rendah dan mendekati RMSE pada data pelatihan, maka model memiliki kemampuan umum dalam memprediksi rating tanpa overfitting pada data pelatihan.
+- RMSE pada data pelatihan pada epoch terakhir adalah 0.2010. Ini berarti, pada saat itu, model rata-rata memprediksi rating dengan kesalahan sekitar 0.2010. Semakin rendah nilai RMSE, semakin akurat model dalam memprediksi rating.
+
+- RMSE pada data validasi pada epoch terakhir adalah 0.2055. Ini menunjukkan kesalahan rata-rata model dalam memprediksi rating pada data validasi sekitar 0.2055. 
+
+Dalam kasus ini, RMSE pada data validasi hampir sebanding dengan RMSE pada data pelatihan, yang menunjukkan bahwa model tidak mengalami overfitting (yaitu, model tidak terlalu mengoptimalkan performa pada data pelatihan dan kehilangan kemampuan umum dalam memprediksi rating pada data baru).
+
+Dalam kesimpulannya, pada epoch terakhir, model sistem rekomendasi memiliki nilai RMSE sebesar 0.2010 pada data pelatihan dan 0.2055 pada data validasi. Nilai-nilai ini menggambarkan kesalahan rata-rata dalam memprediksi rating dan memberikan indikasi tentang seberapa akurat model dalam memberikan rekomendasi kepada pengguna. Semakin rendah nilai RMSE, semakin akurat model dalam memprediksi nilai target dan semakin dekat prediksi model dengan nilai sebenarnya.
 
 Saran untuk kedepannya, dataset movie bisa ditambahkan fitur-fitur lainnya agar bisa diimplementasikan ke real project.
 
